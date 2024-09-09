@@ -3,427 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feriadomanía - Feriados de Argentina</title>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/@firebase/app@latest/dist/index.cjs.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@firebase/auth@latest/dist/index.cjs.js"></script>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: row;
-        }
-
-        .container {
-            display: flex;
-            flex-direction: row;
-            width: 100%;
-        }
-
-        .holiday-list {
-            width: 50%;
-            padding: 20px;
-            background-color: #fff;
-            border-right: 2px solid #ccc;
-            overflow-y: scroll;
-            height: 100vh;
-        }
-
-        .holiday {
-            margin-bottom: 15px;
-            padding: 10px;
-            background-color: #E0F7FA;
-            border-radius: 5px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-        }
-
-        .holiday h3 {
-            color: #00796B;
-        }
-
-        .holiday p {
-            color: #555;
-        }
-
-        .forum {
-            width: 50%;
-            padding: 20px;
-            background-color: #FAFAFA;
-        }
-
-        .forum-header {
-            background-color: #00796B;
-            color: white;
-            padding: 15px;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        .forum-header h3 {
-            margin: 0;
-        }
-
-        .comments {
-            margin-top: 20px;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .comment {
-            background-color: #FFF;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .comment p {
-            margin: 5px 0;
-            color: #333;
-        }
-
-        .comment-author {
-            font-weight: bold;
-            color: #00796B;
-        }
-
-        .comment-input {
-            display: flex;
-            margin-top: 15px;
-        }
-
-        .comment-input input {
-            width: 80%;
-            padding: 10px;
-            border: 2px solid #00796B;
-            border-radius: 5px;
-            margin-right: 10px;
-            outline: none;
-        }
-
-        .comment-input button {
-            width: 20%;
-            padding: 10px;
-            background-color: #00796B;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .comment-input button:hover {
-            background-color: #004D40;
-        }
-
-        #countdown-info {
-            margin-top: 20px;
-            background-color: #E0F2F1;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        #countdown-info p {
-            margin: 5px 0;
-            color: #00796B;
-        }
-    </style>
+    <title>Feriadomanía</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <div class="holiday-list" id="holidayList">
-            <h2>Feriadomanía</h2>
-            <p class="version">Versión 1.0 - Puede contener errores</p>
-            <!-- Lista de feriados -->
+        <div id="login" class="auth">
+            <h2>Iniciar sesión</h2>
+            <form id="login-form">
+                <input type="text" id="login-username" placeholder="Usuario" required>
+                <input type="password" id="login-password" placeholder="Contraseña" required>
+                <button type="submit">Iniciar sesión</button>
+                <p>No tienes cuenta? <a href="#" id="show-register">Regístrate aquí</a></p>
+            </form>
         </div>
 
-        <div class="forum">
-            <div class="forum-header">
-                <h3>Foro de Discusión</h3>
-                <p>Discute sobre los feriados aquí.</p>
-                <div id="g-signin2"></div>
+        <div id="register" class="auth" style="display: none;">
+            <h2>Registrarse</h2>
+            <form id="register-form">
+                <input type="text" id="register-username" placeholder="Usuario" required>
+                <input type="password" id="register-password" placeholder="Contraseña" required>
+                <button type="submit">Registrarse</button>
+                <p>Ya tienes cuenta? <a href="#" id="show-login">Inicia sesión aquí</a></p>
+            </form>
+        </div>
+
+        <div id="app" class="app" style="display: none;">
+            <div class="holiday-list" id="holidayList">
+                <h2>Feriadomanía</h2>
+                <p class="version">Versión 1.0 - Puede contener errores</p>
+                <div id="countdown"></div>
+            </div>
+
+            <div class="forum">
+                <div class="forum-header">
+                    <h3>Foro de Discusión</h3>
+                    <p>Discute sobre los feriados aquí.</p>
+                </div>
+                <div class="comments" id="comments">
+                    <!-- Comentarios se mostrarán aquí -->
+                </div>
+
+                <div class="comment-input">
+                    <input type="text" id="comment" placeholder="Escribe un comentario...">
+                    <button onclick="addComment()">Comentar</button>
+                </div>
+
                 <div id="user-info"></div>
             </div>
-            <div class="comments" id="comments">
-                <!-- Comentarios se mostrarán aquí -->
-            </div>
-
-            <div class="comment-input">
-                <input type="text" id="comment" placeholder="Escribe un comentario...">
-                <button onclick="addComment()">Comentar</button>
-            </div>
         </div>
     </div>
 
-    <div id="countdown-info">
-        <h3>Tiempo para el próximo feriado</h3>
-        <p id="countdown"></p>
-    </div>
-
-    <script>
-        // Configuración de Firebase
-        const firebaseConfig = {
-            apiKey: "YOUR_FIREBASE_API_KEY",
-            authDomain: "YOUR_FIREBASE_AUTH_DOMAIN",
-            projectId: "YOUR_FIREBASE_PROJECT_ID",
-            storageBucket: "YOUR_FIREBASE_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_FIREBASE_MESSAGING_SENDER_ID",
-            appId: "YOUR_FIREBASE_APP_ID"
-        };
-        firebase.initializeApp(firebaseConfig);
-
-        // Función para iniciar sesión con Google
-        function onSignIn(googleUser) {
-            const profile = googleUser.getBasicProfile();
-            document.getElementById('user-info').innerHTML = `Bienvenido, ${profile.getName()}`;
-        }
-
-        function onSignOut() {
-            firebase.auth().signOut().then(() => {
-                document.getElementById('user-info').innerHTML = '';
-            });
-        }
-
-        // Configura el botón de inicio de sesión de Google
-        gapi.load('auth2', function() {
-            gapi.auth2.init().then(function() {
-                gapi.signin2.render('g-signin2', {
-                    'scope': 'profile email',
-                    'width': 240,
-                    'height': 50,
-                    'longtitle': true,
-                    'theme': 'dark',
-                    'onsuccess': onSignIn,
-                    'onerror': function(err) { console.error(err); }
-                });
-            });
-        });
-
-        // Lista de feriados
-        const holidays = [
-            { date: '2024-01-01', name: 'Año Nuevo', description: 'Celebración del inicio del nuevo año.', history: 'Se celebra desde el siglo XVI.' },
-            { date: '2024-02-12', name: 'Carnaval', description: 'Desfiles previos a la Cuaresma.', history: 'Tradición católica.' },
-            { date: '2024-03-24', name: 'Día de la Memoria', description: 'Homenaje a las víctimas de la dictadura.', history: 'Se estableció en 2006.' },
-            { date: '2024-04-02', name: 'Día de Malvinas', description: 'Recuerdo de la guerra de Malvinas.', history: 'Se celebra desde 2000.' },
-            { date: '2024-05-25', name: 'Revolución de Mayo', description: 'Conmemoración de la Revolución.', history: 'Desde 1810.' },
-            // Agregar más feriados aquí
-        ];
-
-        // Renderiza los feriados
-        const holidayList = document.getElementById('holidayList');
-        holidays.forEach(holiday => {
-            const holidayDiv = document.createElement('div');
-            holidayDiv.className = 'holiday';
-            holidayDiv.innerHTML = `<h3>${holiday.name}</h3><p>${holiday.description}</p><p><strong>Historia:</strong> ${holiday.history}</p>`;
-            holidayList.appendChild(holidayDiv);
-        });
-
-        // Función para calcular el tiempo hasta el próximo feriado
-        function updateCountdown() {
-            const now = new Date();
-            let nextHoliday = null;
-
-            for (const holiday of holidays) {
-                const holidayDate = new Date(holiday.date);
-                if (holidayDate > now) {
-                    if (!nextHoliday || holidayDate < new Date(nextHoliday.date)) {
-                        nextHoliday = holiday;
-                    }
-                }
-            }
-
-            if (nextHoliday) {
-                const nextHolidayDate = new Date(nextHoliday.date);
-                const timeDiff = nextHolidayDate - now;
-                const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-
-                document.getElementById('countdown').innerHTML = `Faltan ${days} días, ${hours} horas, ${minutes} minutos y ${seconds} segundos para el ${nextHoliday.name} (${nextHoliday.date}).`;
-            } else {
-                document.getElementById('countdown').innerHTML = 'No hay más feriados en el año.';
-            }
-        }
-
-        setInterval(updateCountdown, 1000); // Actualiza cada segundo
-
-        // Función para agregar comentarios
-        function addComment() {
-            const comment = document.getElementById('comment').value.trim();
-            const userInfo = document.getElementById('user-info').innerText;
-
-            if (!userInfo) {
-                alert('Por favor, inicie sesión para comentar.');
-                return;
-            }
-
-            if (comment) {
-                const commentSection = document.getElementById('comments');
-                const commentDiv = document.createElement('div');
-                commentDiv.className = 'comment';
-                commentDiv.innerHTML = `<p class="comment-author">${userInfo}</p><p>${comment}</p>`;
-                commentSection.appendChild(commentDiv);
-
-                // Guardar comentarios en Local Storage
-                localStorage.setItem('comments', commentSection.innerHTML);
-
-                // Limpiar el campo de entrada
-                document.getElementById('comment').value = '';
-            }
-        }
-
-        // Cargar comentarios guardados
-        function loadComments() {
-            const savedComments = localStorage.getItem('comments');
-            if (savedComments) {
-                document.getElementById('comments').innerHTML = savedComments;
-            }
-        }
-
-        window.onload = loadComments;
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
-<script src="https://www.gstatic.com/firebasejs/9.21.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.21.1/firebase-auth.js"></script>
-<script src="https://apis.google.com/js/platform.js" async defer></script>
-
-<script>
-    // Configuración de Firebase
-    const firebaseConfig = {
-        apiKey: "YOUR_FIREBASE_API_KEY",
-        authDomain: "YOUR_FIREBASE_AUTH_DOMAIN",
-        projectId: "YOUR_FIREBASE_PROJECT_ID",
-        storageBucket: "YOUR_FIREBASE_STORAGE_BUCKET",
-        messagingSenderId: "YOUR_FIREBASE_MESSAGING_SENDER_ID",
-        appId: "YOUR_FIREBASE_APP_ID"
-    };
-
-    // Inicializa Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    // Configura el botón de inicio de sesión de Google
-    function onSignIn(googleUser) {
-        const profile = googleUser.getBasicProfile();
-        document.getElementById('user-info').innerHTML = `Bienvenido, ${profile.getName()}`;
-    }
-
-    function onSignOut() {
-        auth.signOut().then(() => {
-            document.getElementById('user-info').innerHTML = '';
-        });
-    }
-
-    function renderGoogleSignInButton() {
-        gapi.load('auth2', function() {
-            gapi.auth2.init().then(function() {
-                gapi.signin2.render('g-signin2', {
-                    'scope': 'profile email',
-                    'width': 240,
-                    'height': 50,
-                    'longtitle': true,
-                    'theme': 'dark',
-                    'onsuccess': onSignIn,
-                    'onerror': function(err) { console.error(err); }
-                });
-            });
-        });
-    }
-
-    renderGoogleSignInButton(); // Llama a la función para renderizar el botón
-
-    // Lista de feriados
-    const holidays = [
-        { date: '2024-01-01', name: 'Año Nuevo', description: 'Celebración del inicio del nuevo año.', history: 'Se celebra desde el siglo XVI.' },
-        { date: '2024-02-12', name: 'Carnaval', description: 'Desfiles previos a la Cuaresma.', history: 'Tradición católica.' },
-        { date: '2024-03-24', name: 'Día de la Memoria', description: 'Homenaje a las víctimas de la dictadura.', history: 'Se estableció en 2006.' },
-        { date: '2024-04-02', name: 'Día de Malvinas', description: 'Recuerdo de la guerra de Malvinas.', history: 'Se celebra desde 2000.' },
-        { date: '2024-05-25', name: 'Revolución de Mayo', description: 'Conmemoración de la Revolución.', history: 'Desde 1810.' }
-        // Agregar más feriados aquí
-    ];
-
-    // Renderiza los feriados
-    function renderHolidays() {
-        const holidayList = document.getElementById('holidayList');
-        holidays.forEach(holiday => {
-            const holidayDiv = document.createElement('div');
-            holidayDiv.className = 'holiday';
-            holidayDiv.innerHTML = `<h3>${holiday.name}</h3><p>${holiday.description}</p><p><strong>Historia:</strong> ${holiday.history}</p>`;
-            holidayList.appendChild(holidayDiv);
-        });
-    }
-
-    // Calcula y muestra el tiempo hasta el próximo feriado
-    function updateCountdown() {
-        const now = new Date();
-        let nextHoliday = null;
-
-        for (const holiday of holidays) {
-            const holidayDate = new Date(holiday.date);
-            if (holidayDate > now) {
-                if (!nextHoliday || holidayDate < new Date(nextHoliday.date)) {
-                    nextHoliday = holiday;
-                }
-            }
-        }
-
-        if (nextHoliday) {
-            const nextHolidayDate = new Date(nextHoliday.date);
-            const timeDiff = nextHolidayDate - now;
-            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-
-            document.getElementById('countdown').innerHTML = `Faltan ${days} días, ${hours} horas, ${minutes} minutos y ${seconds} segundos para el ${nextHoliday.name} (${nextHoliday.date}).`;
-        } else {
-            document.getElementById('countdown').innerHTML = 'No hay más feriados en el año.';
-        }
-    }
-
-    setInterval(updateCountdown, 1000); // Actualiza cada segundo
-
-    // Agrega un comentario
-    function addComment() {
-        const comment = document.getElementById('comment').value.trim();
-        const userInfo = document.getElementById('user-info').innerText;
-
-        if (!userInfo) {
-            alert('Por favor, inicie sesión para comentar.');
-            return;
-        }
-
-        if (comment) {
-            const commentSection = document.getElementById('comments');
-            const commentDiv = document.createElement('div');
-            commentDiv.className = 'comment';
-            commentDiv.innerHTML = `<p class="comment-author">${userInfo}</p><p>${comment}</p>`;
-            commentSection.appendChild(commentDiv);
-
-            // Guardar comentarios en Local Storage
-            localStorage.setItem('comments', commentSection.innerHTML);
-
-            // Limpiar el campo de entrada
-            document.getElementById('comment').value = '';
-        }
-    }
-
-    // Cargar comentarios guardados
-    function loadComments() {
-        const savedComments = localStorage.getItem('comments');
-        if (savedComments) {
-            document.getElementById('comments').innerHTML = savedComments;
-        }
-    }
-
-    window.onload = () => {
-        renderHolidays();
-        loadComments();
-    };
-</script>
