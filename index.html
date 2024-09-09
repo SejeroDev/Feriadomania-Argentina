@@ -17,6 +17,7 @@
         .login, .register { margin-bottom: 20px; }
         .forum { margin-top: 20px; }
         .countdown { background-color: #ffffff; border-radius: 8px; padding: 20px; margin: 10px auto; width: 80%; max-width: 600px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); text-align: center; }
+        select { padding: 10px; border-radius: 5px; border: 1px solid #00796b; background-color: #ffffff; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
@@ -24,11 +25,16 @@
 <body>
     <h1>Calendario de Feriados y Foro</h1>
 
-    <div id="holidays-list"></div>
-
     <div class="countdown">
         <h2>Cuenta Regresiva para el Próximo Feriado</h2>
         <div id="countdown-timer"></div>
+    </div>
+
+    <div>
+        <label for="holiday-select">Selecciona un feriado:</label>
+        <select id="holiday-select" onchange="displayHolidayDetails()">
+            <option value="">--Seleccione un feriado--</option>
+        </select>
     </div>
 
     <div class="forum">
@@ -78,10 +84,11 @@
             { date: '2024-10-12', name: 'Día del Respeto a la Diversidad Cultural', description: 'Celebración de la diversidad cultural y reconocimiento de las culturas originarias.' },
             { date: '2024-11-01', name: 'Día de Todos los Santos', description: 'Celebración cristiana en honor a todos los santos.' },
             { date: '2024-11-25', name: 'Día de la Soberanía Nacional', description: 'Conmemoración de la batalla de Vuelta de Obligado, que destacó la resistencia argentina contra la invasión anglo-francesa.' },
-            { date: '2024-12-08', name: 'Inmaculada Concepción de la Virgen María', description: 'Celebración religiosa en honor a la Virgen María y su concepción sin pecado original.' }
+            { date: '2024-12-08', name: 'Inmaculada Concepción de la Virgen María', description: 'Celebración religiosa en honor a la Virgen María y su concepción sin pecado original.' },
+            { date: '2024-12-24', name: 'Nochebuena', description: 'Celebración de la víspera de Navidad.' },
+            { date: '2024-12-25', name: 'Navidad', description: 'Celebración del nacimiento de Jesucristo.' }
         ];
 
-        // Datos de usuarios para el inicio de sesión
         const users = [
             { username: 'usuario1', password: 'contraseña1' },
             { username: 'usuario2', password: 'contraseña2' }
@@ -92,44 +99,56 @@
         let loggedIn = false;
 
         function displayHolidays() {
-            const holidaysList = document.getElementById('holidays-list');
-            holidaysList.innerHTML = ''; // Limpiar lista actual
+            const holidaySelect = document.getElementById('holiday-select');
+            holidaySelect.innerHTML = '<option value="">--Seleccione un feriado--</option>'; // Limpiar opciones actuales
 
             holidays.forEach(holiday => {
-                const holidayDiv = document.createElement('div');
-                holidayDiv.className = 'holiday';
-                holidayDiv.innerHTML = `
-                    <strong>${holiday.name}</strong><br>
-                    Fecha: ${holiday.date}<br>
-                    Descripción: ${holiday.description}
-                `;
-                holidaysList.appendChild(holidayDiv);
+                const option = document.createElement('option');
+                option.value = holiday.date;
+                option.textContent = `${holiday.name} - ${holiday.date}`;
+                holidaySelect.appendChild(option);
             });
         }
 
-        function countdownToNextHoliday() {
-            const today = new Date();
-            const upcomingHoliday = holidays
-                .map(h => ({ ...h, date: new Date(h.date) }))
-                .filter(h => h.date > today)
-                .sort((a, b) => a.date - b.date)[0];
+        function displayHolidayDetails() {
+            const selectedDate = document.getElementById('holiday-select').value;
+            const holiday = holidays.find(h => h.date === selectedDate);
 
-            if (!upcomingHoliday) {
-                document.getElementById('countdown-timer').innerText = 'No hay más feriados en el año.';
-                return;
+            if (holiday) {
+                document.getElementById('countdown-timer').innerHTML = `
+                    <h2>${holiday.name}</h2>
+                    <p>${holiday.description}</p>
+                `;
+            } else {
+                document.getElementById('countdown-timer').innerHTML = 'Selecciona un feriado para ver los detalles.';
             }
+        }
 
-            const timeDifference = upcomingHoliday.date - today;
-            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+        function countdownToNextHoliday() {
+            const now = new Date();
+            const upcomingHoliday = holidays
+                .map(h => new Date(h.date))
+                .filter(date => date > now)
+                .sort((a, b) => a - b)[0];
 
-            document.getElementById('countdown-timer').innerHTML = `
-                ${days} días, ${hours} horas, ${minutes} minutos, ${seconds} segundos
-                <br><strong>${upcomingHoliday.name}</strong><br>
-                ${upcomingHoliday.description}
-            `;
+            if (upcomingHoliday) {
+                setInterval(() => {
+                    const now = new Date();
+                    const diff = upcomingHoliday - now;
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                    document.getElementById('countdown-timer').innerHTML = `
+                        ${days} días, ${hours} horas, ${minutes} minutos, ${seconds} segundos
+                        <br><strong>${upcomingHoliday.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</strong>
+                        <br>${holidays.find(h => h.date === upcomingHoliday.toISOString().split('T')[0]).description}
+                    `;
+                }, 1000);
+            } else {
+                document.getElementById('countdown-timer').innerHTML = 'No hay feriados próximos.';
+            }
         }
 
         function login() {
