@@ -5,28 +5,126 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feriadomania🧉| Calendario de Feriados y Foro</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #e0f7fa; color: #333; }
-        h1 { color: #00796b; text-align: center; font-size: 1.5em; }
-        .container { display: flex; justify-content: space-between; }
-        .section { background-color: #ffffff; border-radius: 8px; padding: 15px; margin: 10px; width: 48%; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-        .section:hover { background-color: #b2dfdb; }
-        .btn { background-color: #00796b; color: #ffffff; border: none; border-radius: 5px; padding: 8px 16px; font-size: 14px; cursor: pointer; transition: background-color 0.3s; }
-        .btn:hover { background-color: #004d40; }
-        .btn:disabled { background-color: #b2dfdb; cursor: not-allowed; }
-        .login, .register { margin-bottom: 15px; }
-        .forum { margin-top: 15px; }
-        .countdown { text-align: center; position: relative; font-size: 0.9em; }
-        .countdown h2 { color: #004d40; font-size: 1.2em; margin-bottom: 15px; }
-        .countdown .timer { font-size: 1.5em; color: #00796b; font-weight: bold; margin-bottom: 5px; }
-        .countdown .details { font-size: 0.9em; color: #004d40; }
-        .holiday-list { max-height: 300px; overflow-y: auto; }
-        .holiday-list ul { list-style: none; padding: 0; }
-        .holiday-list li { margin: 5px 0; padding: 10px; border: 1px solid #00796b; border-radius: 5px; background-color: #ffffff; cursor: pointer; transition: background-color 0.3s; font-size: 0.9em; }
-        .holiday-list li:hover { background-color: #b2dfdb; }
-        .holiday-details { font-size: 0.9em; color: #004d40; }
-        .no-holidays { background-color: #ffebee; color: #b71c1c; padding: 10px; border: 1px solid #b71c1c; border-radius: 5px; text-align: center; font-size: 0.9em; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background-color: #e0f7fa; 
+            color: #333; 
+        }
+        h1 { 
+            color: #00796b; 
+            text-align: center; 
+            font-size: 1.5em; 
+        }
+        .container { 
+            display: flex; 
+            justify-content: space-between; 
+        }
+        .section { 
+            background-color: #ffffff; 
+            border-radius: 8px; 
+            padding: 15px; 
+            margin: 10px; 
+            width: 48%; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+        }
+        .section:hover { 
+            background-color: #b2dfdb; 
+        }
+        .btn { 
+            background-color: #00796b; 
+            color: #ffffff; 
+            border: none; 
+            border-radius: 5px; 
+            padding: 8px 16px; 
+            font-size: 14px; 
+            cursor: pointer; 
+            transition: background-color 0.3s; 
+        }
+        .btn:hover { 
+            background-color: #004d40; 
+        }
+        .btn:disabled { 
+            background-color: #b2dfdb; 
+            cursor: not-allowed; 
+        }
+        .login, .register { 
+            margin-bottom: 15px; 
+        }
+        .forum { 
+            margin-top: 15px; 
+        }
+        .countdown { 
+            text-align: center; 
+            position: relative; 
+            font-size: 0.9em; 
+        }
+        .countdown h2 { 
+            color: #004d40; 
+            font-size: 1.2em; 
+            margin-bottom: 15px; 
+        }
+        .countdown .timer { 
+            font-size: 1.5em; 
+            color: #00796b; 
+            font-weight: bold; 
+            margin-bottom: 5px; 
+        }
+        .countdown .details { 
+            font-size: 0.9em; 
+            color: #004d40; 
+        }
+        .holiday-list { 
+            max-height: 300px; 
+            overflow-y: auto; 
+        }
+        .holiday-list ul { 
+            list-style: none; 
+            padding: 0; 
+        }
+        .holiday-list li { 
+            margin: 5px 0; 
+            padding: 10px; 
+            border: 1px solid #00796b; 
+            border-radius: 5px; 
+            background-color: #ffffff; 
+            cursor: pointer; 
+            transition: background-color 0.3s; 
+            font-size: 0.9em; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+        }
+        .holiday-list li:hover { 
+            background-color: #b2dfdb; 
+        }
+        .holiday-details { 
+            font-size: 0.9em; 
+            color: #004d40; 
+        }
+        .no-holidays { 
+            background-color: #ffebee; 
+            color: #b71c1c; 
+            padding: 10px; 
+            border: 1px solid #b71c1c; 
+            border-radius: 5px; 
+            text-align: center; 
+            font-size: 0.9em; 
+        }
+        .warning-message { 
+            color: rgb(199, 154, 29); 
+            font-size: 1em; 
+            text-align: center; 
+            margin-top: 10px; 
+        }
+        @keyframes fadeIn { 
+            from { opacity: 0; } 
+            to { opacity: 1; } 
+        }
+        @keyframes slideIn { 
+            from { transform: translateY(-20px); opacity: 0; } 
+            to { transform: translateY(0); opacity: 1; } 
+        }
     </style>
 </head>
 <body>
@@ -41,6 +139,9 @@
             <h2>Cuenta Regresiva para el Próximo Feriado</h2>
             <div class="timer" id="countdown-timer"></div>
             <div class="details" id="holiday-details"></div>
+             <div id="weekend-warning" class="warning-message" style="display: none;">
+                El próximo feriado cae en fin de semana</span>.
+            </div>
         </div>
 
         <div class="section holiday-list">
@@ -112,12 +213,17 @@
             { month: 10, day: 25, name: 'Día de la Soberanía Nacional', description: 'Conmemoración de la batalla de Vuelta de Obligado, que destacó la resistencia argentina contra la invasión anglo-francesa.', reason: 'Honrar la valentía y la resistencia en la batalla de Vuelta de Obligado.' },
             { month: 11, day: 8, name: 'Inmaculada Concepción de la Virgen María', description: 'Celebración religiosa en honor a la Virgen María y su concepción sin pecado original.', reason: 'Celebrar el dogma de la Inmaculada Concepción de la Virgen María.' },
             { month: 11, day: 24, name: 'Nochebuena', description: 'Celebración de la víspera de Navidad.', reason: 'Prepararse para la Navidad con celebraciones y reuniones familiares.' },
-            { month: 11, day: 25, name: 'Navidad', description: 'Celebración del nacimiento de Jesucristo.', reason: 'Conmemorar el nacimiento de Jesús y la festividad cristiana de la Navidad.' }
+            { month: 11, day: 25, name: 'Navidad', description: 'Celebración del nacimiento de Jesucristo.', reason: 'Conmemorar el nacimiento de Jesús y la festividad cristiana de la Navidad.' },
+            { month: 11, day: 31, name: 'Fin de Año', description: 'Despedida del año en curso.', reason: 'Celebrar el final del año y prepararse para el nuevo ciclo.' }
         ];
 
         function getHolidaysForYear(year) {
             return baseHolidays.map(holiday => {
-                return { ...holiday, date: `${year}-${String(holiday.month + 1).padStart(2, '0')}-${String(holiday.day).padStart(2, '0')}` };
+                const date = new Date(year, holiday.month, holiday.day);
+                return { 
+                    ...holiday, 
+                    date: date 
+                };
             });
         }
 
@@ -142,9 +248,26 @@
             const holidays = getHolidaysForYear(year);
             const holidayList = document.getElementById('holiday-list');
             holidayList.innerHTML = '';
+            const now = new Date();
+
             holidays.forEach(holiday => {
+                const timeDiff = holiday.date - now;
+                const daysUntilHoliday = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
                 const listItem = document.createElement('li');
-                listItem.textContent = `${holiday.name} (${holiday.date})`;
+
+                // Crear elementos para el nombre y el contador
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = `${holiday.name} (${holiday.date.toLocaleDateString()})`;
+
+                const counterSpan = document.createElement('span');
+                counterSpan.textContent = `Faltan ${daysUntilHoliday} días`;
+                counterSpan.style.fontWeight = 'bold';
+                counterSpan.style.color = '#00796b';
+
+                listItem.appendChild(nameSpan);
+                listItem.appendChild(counterSpan);
+
                 listItem.onclick = () => {
                     displayHolidayDetails(holiday);
                 };
@@ -156,7 +279,7 @@
             const detailsDiv = document.getElementById('holiday-info');
             detailsDiv.innerHTML = `
                 <strong>${holiday.name}</strong><br>
-                Fecha: ${holiday.date}<br>
+                Fecha: ${holiday.date.toLocaleDateString()}<br>
                 Descripción: ${holiday.description}<br>
                 Razón: ${holiday.reason}
             `;
@@ -167,33 +290,47 @@
             const holidays = getHolidaysForYear(year);
             const now = new Date();
             const upcomingHoliday = holidays
-                .map(h => new Date(h.date))
-                .filter(date => date > now)
-                .sort((a, b) => a - b)[0];
+                .filter(h => h.date > now)
+                .sort((a, b) => a.date - b.date)[0];
 
             if (upcomingHoliday) {
-                setInterval(() => {
+                // Mostrar el mensaje si el próximo feriado es sábado o domingo
+                const dayOfWeek = upcomingHoliday.date.getDay(); // 0 = Domingo, 6 = Sábado
+                if (dayOfWeek === 0 || dayOfWeek === 6) {
+                    document.getElementById('weekend-warning').style.display = 'block';
+                } else {
+                    document.getElementById('weekend-warning').style.display = 'none';
+                }
+
+                const intervalId = setInterval(() => {
                     const now = new Date();
-                    const diff = upcomingHoliday - now;
+                    const diff = upcomingHoliday.date - now;
+
+                    if (diff <= 0) {
+                        clearInterval(intervalId);
+                        countdownToNextHoliday(); // Reiniciar para el siguiente feriado
+                        return;
+                    }
+
                     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
                     document.getElementById('countdown-timer').innerHTML = `
-                        <div class="timer">
-                            ${days} días, ${hours} horas, ${minutes} minutos, ${seconds} segundos
-                        </div>
+                        ${days} días, ${hours} horas, ${minutes} minutos, ${seconds} segundos
                     `;
                     document.getElementById('holiday-details').innerHTML = `
-                        <strong>${upcomingHoliday.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</strong><br>
-                        ${holidays.find(h => h.date === upcomingHoliday.toISOString().split('T')[0]).description}<br>
-                        <em>${holidays.find(h => h.date === upcomingHoliday.toISOString().split('T')[0]).reason}</em>
+                        <strong>${upcomingHoliday.name}</strong><br>
+                        ${upcomingHoliday.date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}<br>
+                        ${upcomingHoliday.description}<br>
+                        <em>${upcomingHoliday.reason}</em>
                     `;
                 }, 1000);
             } else {
                 document.getElementById('countdown-timer').innerHTML = 'No hay feriados próximos.';
                 document.getElementById('holiday-details').innerHTML = '';
+                document.getElementById('weekend-warning').style.display = 'none';
             }
         }
 
