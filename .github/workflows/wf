@@ -1,0 +1,19 @@
+# .github/workflows/main.yml
+name: Backend Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: npm install
+      - run: node index.js # Aquí pones el comando para ejecutar tu backend
