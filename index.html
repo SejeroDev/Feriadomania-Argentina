@@ -3,47 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cuenta Regresiva para el Próximo Feriado en Argentina</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Feriadomania</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+        }
+
+        .holiday-list {
+            width: 50%;
+            padding: 20px;
+            background-color: #fff;
+            border-right: 2px solid #ccc;
+            overflow-y: scroll;
+            height: 100vh;
+            animation: fadeInLeft 1s;
+        }
+
+        .holiday {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #E0F7FA;
+            border-radius: 5px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .holiday:hover {
+            transform: translateX(10px);
+        }
+
+        .holiday h3 {
+            color: #00796B;
+        }
+
+        .holiday p {
+            color: #555;
+        }
+
+        .forum {
+            width: 50%;
+            padding: 20px;
+            background-color: #FAFAFA;
+            animation: fadeInRight 1s;
+        }
+
+        .forum-header {
+            background-color: #00796B;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .forum-header h3 {
+            margin: 0;
+        }
+
+        .comments {
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .comment {
+            background-color: #FFF;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment p {
+            margin: 5px 0;
+            color: #333;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: #00796B;
+        }
+
+        .comment-input {
+            display: flex;
+            margin-top: 15px;
+        }
+
+        .comment-input input {
+            width: 80%;
+            padding: 10px;
+            border: 2px solid #00796B;
+            border-radius: 5px;
+            margin-right: 10px;
+            outline: none;
+        }
+
+        .comment-input button {
+            width: 20%;
+            padding: 10px;
+            background-color: #00796B;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .comment-input button:hover {
+            background-color: #004D40;
+        }
+
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Próximo Feriado en Argentina</h1>
-        <div id="countdown">
-            <div class="countdown-item">
-                <h2>Días Restantes:</h2>
-                <p id="days" class="countdown-number"></p>
+        <div class="holiday-list" id="holidayList">
+            <h2>Feriadomania</h2>
+            <p class="version">Versión 1.0 - Puede contener errores</p>
+            <!-- Lista de feriados -->
+        </div>
+
+        <div class="forum">
+            <div class="forum-header">
+                <h3>Foro de Discusión</h3>
+                <p>Discute sobre los feriados aquí.</p>
             </div>
-            <div class="countdown-item">
-                <h2>Semanas Restantes:</h2>
-                <p id="weeks" class="countdown-number"></p>
+            <div class="comments" id="comments">
+                <!-- Comentarios se mostrarán aquí -->
             </div>
-            <div class="countdown-item">
-                <h2>Minutos y Segundos:</h2>
-                <p id="time"></p>
-            </div>
-            <div class="countdown-item">
-                <h2>Feriado:</h2>
-                <p id="holiday-name"></p>
-            </div>
-            <div class="countdown-item">
-                <h2>Descripción:</h2>
-                <p id="holiday-description"></p>
-            </div>
-            <div class="countdown-item">
-                <h2>Datos Históricos:</h2>
-                <p id="holiday-history"></p>
-            </div>
-            <div class="countdown-item">
-                <img id="holiday-image" alt="Imagen del feriado" />
+
+            <div class="comment-input">
+                <input type="text" id="author" placeholder="Tu nombre">
+                <input type="text" id="comment" placeholder="Escribe un comentario...">
+                <button onclick="addComment()">Comentar</button>
             </div>
         </div>
-        <button onclick="calculateCountdown()">Actualizar Conteo</button>
     </div>
-    <footer>
-        <p>Información basada en los feriados nacionales de Argentina 2024.</p>
-    </footer>
 
-    <script src="script.js"></script>
+    <script>
+        // Lista de feriados
+        const holidays = [
+            { date: '2024-01-01', name: 'Año Nuevo', description: 'Celebración del inicio del nuevo año.', history: 'Se celebra desde el siglo XVI.' },
+            { date: '2024-02-12', name: 'Carnaval', description: 'Desfiles previos a la Cuaresma.', history: 'Tradición católica.' },
+            { date: '2024-03-24', name: 'Día de la Memoria', description: 'Homenaje a las víctimas de la dictadura.', history: 'Se estableció en 2006.' },
+            { date: '2024-04-02', name: 'Día de Malvinas', description: 'Recuerdo de la guerra de Malvinas.', history: 'Se celebra desde 2000.' },
+            { date: '2024-05-25', name: 'Revolución de Mayo', description: 'Conmemoración de la Revolución.', history: 'Desde 1810.' }
+            // Agregar más feriados aquí
+        ];
+
+        // Renderiza los feriados
+        const holidayList = document.getElementById('holidayList');
+        holidays.forEach(holiday => {
+            const holidayDiv = document.createElement('div');
+            holidayDiv.className = 'holiday';
+            holidayDiv.innerHTML = `<h3>${holiday.name}</h3><p>${holiday.description}</p><p><strong>Historia:</strong> ${holiday.history}</p>`;
+            holidayList.appendChild(holidayDiv);
+        });
+
+        // Función para agregar comentarios
+        function addComment() {
+            const author = document.getElementById('author').value;
+            const comment = document.getElementById('comment').value;
+            if (author && comment) {
+                const commentSection = document.getElementById('comments');
+                const commentDiv = document.createElement('div');
+                commentDiv.className = 'comment';
+                commentDiv.innerHTML = `<p class="comment-author">${author}</p><p>${comment}</p>`;
+                commentSection.appendChild(commentDiv);
+
+                // Limpiar los campos de entrada
+                document.getElementById('author').value = '';
+                document.getElementById('comment').value = '';
+            }
+        }
+    </script>
 </body>
 </html>
