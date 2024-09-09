@@ -16,7 +16,37 @@
         .btn:disabled { background-color: #b2dfdb; cursor: not-allowed; }
         .login, .register { margin-bottom: 20px; }
         .forum { margin-top: 20px; }
-        .countdown { background-color: #ffffff; border-radius: 8px; padding: 20px; margin: 10px auto; width: 80%; max-width: 600px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); text-align: center; }
+        .countdown { 
+            background-color: #ffffff; 
+            border-radius: 8px; 
+            padding: 20px; 
+            margin: 10px auto; 
+            width: 80%; 
+            max-width: 600px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+            text-align: center; 
+            position: relative;
+            font-size: 1.2em;
+        }
+        .countdown h2 { 
+            color: #004d40; 
+            margin-bottom: 20px; 
+        }
+        .countdown .timer { 
+            font-size: 2em; 
+            color: #00796b; 
+            font-weight: bold; 
+            margin-bottom: 10px; 
+        }
+        .countdown .details { 
+            font-size: 1em; 
+            color: #004d40; 
+        }
+        .details strong { 
+            display: block; 
+            margin-top: 10px; 
+            font-size: 1.2em; 
+        }
         select { padding: 10px; border-radius: 5px; border: 1px solid #00796b; background-color: #ffffff; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -27,7 +57,8 @@
 
     <div class="countdown">
         <h2>Cuenta Regresiva para el Próximo Feriado</h2>
-        <div id="countdown-timer"></div>
+        <div class="timer" id="countdown-timer"></div>
+        <div class="details" id="holiday-details"></div>
     </div>
 
     <div>
@@ -83,9 +114,9 @@
             { date: '2024-08-19', name: 'Día del Paso a la Inmortalidad del General José de San Martín', description: 'Conmemoración del líder de la independencia sudamericana.', reason: 'Recordar las contribuciones de San Martín a la independencia de Sudamérica.' },
             { date: '2024-10-12', name: 'Día del Respeto a la Diversidad Cultural', description: 'Celebración de la diversidad cultural y reconocimiento de las culturas originarias.', reason: 'Promover el respeto y la valoración de las diversas culturas en Argentina.' },
             { date: '2024-11-01', name: 'Día de Todos los Santos', description: 'Celebración cristiana en honor a todos los santos.', reason: 'Recordar y honrar a todos los santos en la tradición cristiana.' },
-            { date: '2024-11-25', name: 'Día de la Soberanía Nacional', description: 'Conmemoración de la batalla de Vuelta de Obligado, que destacó la resistencia argentina contra la invasión anglo-francesa.', reason: 'Celebrar la resistencia de Argentina frente a la invasión extranjera.' },
-            { date: '2024-12-08', name: 'Inmaculada Concepción de la Virgen María', description: 'Celebración religiosa en honor a la Virgen María y su concepción sin pecado original.', reason: 'Conmemorar la creencia en la concepción sin pecado original de la Virgen María.' },
-            { date: '2024-12-24', name: 'Nochebuena', description: 'Celebración de la víspera de Navidad.', reason: 'Celebrar la víspera de Navidad y preparar para el día siguiente.' },
+            { date: '2024-11-25', name: 'Día de la Soberanía Nacional', description: 'Conmemoración de la batalla de Vuelta de Obligado, que destacó la resistencia argentina contra la invasión anglo-francesa.', reason: 'Honrar la valentía y la resistencia en la batalla de Vuelta de Obligado.' },
+            { date: '2024-12-08', name: 'Inmaculada Concepción de la Virgen María', description: 'Celebración religiosa en honor a la Virgen María y su concepción sin pecado original.', reason: 'Celebrar el dogma de la Inmaculada Concepción de la Virgen María.' },
+            { date: '2024-12-24', name: 'Nochebuena', description: 'Celebración de la víspera de Navidad.', reason: 'Prepararse para la Navidad con celebraciones y reuniones familiares.' },
             { date: '2024-12-25', name: 'Navidad', description: 'Celebración del nacimiento de Jesucristo.', reason: 'Conmemorar el nacimiento de Jesús y la festividad cristiana de la Navidad.' }
         ];
 
@@ -109,15 +140,13 @@
             const holiday = holidays.find(h => h.date === selectedDate);
 
             if (holiday) {
-                const holidayDiv = document.createElement('div');
-                holidayDiv.className = 'holiday';
-                holidayDiv.innerHTML = `
+                const detailsDiv = document.getElementById('holiday-details');
+                detailsDiv.innerHTML = `
                     <strong>${holiday.name}</strong><br>
                     Fecha: ${holiday.date}<br>
                     Descripción: ${holiday.description}<br>
                     Razón: ${holiday.reason}
                 `;
-                document.body.appendChild(holidayDiv);
             }
         }
 
@@ -138,14 +167,19 @@
                     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
                     document.getElementById('countdown-timer').innerHTML = `
-                        ${days} días, ${hours} horas, ${minutes} minutos, ${seconds} segundos
-                        <br><strong>${upcomingHoliday.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</strong>
-                        <br>${holidays.find(h => h.date === upcomingHoliday.toISOString().split('T')[0]).description}
-                        <br><em>${holidays.find(h => h.date === upcomingHoliday.toISOString().split('T')[0]).reason}</em>
+                        <div class="timer">
+                            ${days} días, ${hours} horas, ${minutes} minutos, ${seconds} segundos
+                        </div>
+                    `;
+                    document.getElementById('holiday-details').innerHTML = `
+                        <strong>${upcomingHoliday.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</strong><br>
+                        ${holidays.find(h => h.date === upcomingHoliday.toISOString().split('T')[0]).description}<br>
+                        <em>${holidays.find(h => h.date === upcomingHoliday.toISOString().split('T')[0]).reason}</em>
                     `;
                 }, 1000);
             } else {
                 document.getElementById('countdown-timer').innerHTML = 'No hay feriados próximos.';
+                document.getElementById('holiday-details').innerHTML = '';
             }
         }
 
