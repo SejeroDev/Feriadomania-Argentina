@@ -3,199 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feriadomania</title>
+    <title>Feriadomanía - Feriados de Argentina</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: row;
-        }
-
-        .container {
-            display: flex;
-            flex-direction: row;
-            width: 100%;
-        }
-
-        .holiday-list {
-            width: 50%;
-            padding: 20px;
-            background-color: #fff;
-            border-right: 2px solid #ccc;
-            overflow-y: scroll;
-            height: 100vh;
-            animation: fadeInLeft 1s;
-        }
-
-        .holiday {
-            margin-bottom: 15px;
-            padding: 10px;
-            background-color: #E0F7FA;
-            border-radius: 5px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .holiday:hover {
-            transform: translateX(10px);
-        }
-
-        .holiday h3 {
-            color: #00796B;
-        }
-
-        .holiday p {
-            color: #555;
-        }
-
-        .forum {
-            width: 50%;
-            padding: 20px;
-            background-color: #FAFAFA;
-            animation: fadeInRight 1s;
-        }
-
-        .forum-header {
-            background-color: #00796B;
-            color: white;
-            padding: 15px;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        .forum-header h3 {
-            margin: 0;
-        }
-
-        .comments {
-            margin-top: 20px;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .comment {
-            background-color: #FFF;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .comment p {
-            margin: 5px 0;
+            background-color: #f4f4f4;
             color: #333;
         }
 
-        .comment-author {
-            font-weight: bold;
-            color: #00796B;
+        header {
+            background-color: #006400;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
         }
 
-        .comment-input {
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        main {
             display: flex;
-            margin-top: 15px;
+            justify-content: space-around;
+            padding: 20px;
         }
 
-        .comment-input input {
-            width: 80%;
-            padding: 10px;
-            border: 2px solid #00796B;
-            border-radius: 5px;
-            margin-right: 10px;
-            outline: none;
+        section {
+            width: 45%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .comment-input button {
-            width: 20%;
+        #countdown-info p {
+            margin: 5px 0;
+        }
+
+        #forum-input {
+            width: 100%;
             padding: 10px;
-            background-color: #00796B;
+            margin-top: 10px;
+        }
+
+        #submit-message {
+            display: block;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #006400;
             color: white;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        #submit-message:hover {
+            background-color: #008000;
+        }
+
+        .forum-message {
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .container {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        button {
             transition: background-color 0.3s ease;
-        }
-
-        .comment-input button:hover {
-            background-color: #004D40;
-        }
-
-        @keyframes fadeInLeft {
-            from { opacity: 0; transform: translateX(-50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        @keyframes fadeInRight {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="holiday-list" id="holidayList">
-            <h2>Feriadomania</h2>
-            <p class="version">Versión 1.0 - Puede contener errores</p>
-            <!-- Lista de feriados -->
-        </div>
+    <header>
+        <h1>Feriadomanía</h1>
+        <p>Versión 1.0 - Puede contener errores</p>
+    </header>
 
-        <div class="forum">
-            <div class="forum-header">
-                <h3>Foro de Discusión</h3>
-                <p>Discute sobre los feriados aquí.</p>
+    <main class="container">
+        <!-- Sección de cuenta regresiva -->
+        <section class="countdown-section">
+            <h2>Próximo Feriado</h2>
+            <div id="countdown-info">
+                <p id="next-holiday-name"></p>
+                <p id="next-holiday-date"></p>
+                <p id="days-left"></p>
+                <p id="hours-left"></p>
+                <p id="holiday-bio"></p>
             </div>
-            <div class="comments" id="comments">
-                <!-- Comentarios se mostrarán aquí -->
-            </div>
+        </section>
 
-            <div class="comment-input">
-                <input type="text" id="author" placeholder="Tu nombre">
-                <input type="text" id="comment" placeholder="Escribe un comentario...">
-                <button onclick="addComment()">Comentar</button>
-            </div>
-        </div>
-    </div>
+        <!-- Foro de discusión -->
+        <section class="forum-section">
+            <h2>Foro de Discusión</h2>
+            <div id="forum-messages"></div>
+            <textarea id="forum-input" placeholder="Escribe tu mensaje aquí"></textarea>
+            <button id="submit-message">Enviar Mensaje</button>
+        </section>
+    </main>
 
     <script>
-        // Lista de feriados
         const holidays = [
-            { date: '2024-01-01', name: 'Año Nuevo', description: 'Celebración del inicio del nuevo año.', history: 'Se celebra desde el siglo XVI.' },
-            { date: '2024-02-12', name: 'Carnaval', description: 'Desfiles previos a la Cuaresma.', history: 'Tradición católica.' },
-            { date: '2024-03-24', name: 'Día de la Memoria', description: 'Homenaje a las víctimas de la dictadura.', history: 'Se estableció en 2006.' },
-            { date: '2024-04-02', name: 'Día de Malvinas', description: 'Recuerdo de la guerra de Malvinas.', history: 'Se celebra desde 2000.' },
-            { date: '2024-05-25', name: 'Revolución de Mayo', description: 'Conmemoración de la Revolución.', history: 'Desde 1810.' }
-            // Agregar más feriados aquí
+            {
+                date: '2024-01-01',
+                name: 'Año Nuevo',
+                description: 'Celebración del inicio del nuevo año según el calendario gregoriano.',
+                history: 'Este feriado se celebra desde el siglo XVI con grandes festejos en todo el mundo. Es una fecha marcada por la esperanza de nuevos comienzos.'
+            },
+            {
+                date: '2024-02-12',
+                name: 'Carnaval',
+                description: 'Fiestas y desfiles previos al inicio de la Cuaresma.',
+                history: 'El Carnaval en Argentina tiene raíces en las tradiciones religiosas y culturales, con celebraciones coloridas que datan del siglo XIX.'
+            },
+            // Agrega el resto de feriados aquí...
         ];
 
-        // Renderiza los feriados
-        const holidayList = document.getElementById('holidayList');
-        holidays.forEach(holiday => {
-            const holidayDiv = document.createElement('div');
-            holidayDiv.className = 'holiday';
-            holidayDiv.innerHTML = `<h3>${holiday.name}</h3><p>${holiday.description}</p><p><strong>Historia:</strong> ${holiday.history}</p>`;
-            holidayList.appendChild(holidayDiv);
-        });
+        const blockedWords = ['insulto1', 'insulto2'];  // Agrega aquí más palabras prohibidas
 
-        // Función para agregar comentarios
-        function addComment() {
-            const author = document.getElementById('author').value;
-            const comment = document.getElementById('comment').value;
-            if (author && comment) {
-                const commentSection = document.getElementById('comments');
-                const commentDiv = document.createElement('div');
-                commentDiv.className = 'comment';
-                commentDiv.innerHTML = `<p class="comment-author">${author}</p><p>${comment}</p>`;
-                commentSection.appendChild(commentDiv);
+        // Calcular el próximo feriado
+        function calculateNextHoliday() {
+            const today = new Date();
+            let nextHoliday = null;
 
-                // Limpiar los campos de entrada
-                document.getElementById('author').value = '';
-                document.getElementById('comment').value = '';
+            for (const holiday of holidays) {
+                const holidayDate = new Date(holiday.date);
+                if (holidayDate > today) {
+                    nextHoliday = holiday;
+                    break;
+                }
+            }
+
+            if (nextHoliday) {
+                const timeDiff = new Date(nextHoliday.date) - today;
+                const daysLeft = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                const hoursLeft = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+                document.getElementById('next-holiday-name').textContent = `Próximo Feriado: ${nextHoliday.name}`;
+                document.getElementById('next-holiday-date').textContent = `Fecha: ${new Date(nextHoliday.date).toLocaleDateString('es-AR')}`;
+                document.getElementById('days-left').textContent = `Faltan ${daysLeft} días y ${hoursLeft} horas.`;
+                document.getElementById('holiday-bio').textContent = `Biografía: ${nextHoliday.history}`;
             }
         }
+
+        // Función para manejar los mensajes del foro
+        function handleForumMessage() {
+            const input = document.getElementById('forum-input').value.trim();
+
+            // Verificar palabras prohibidas
+            for (const word of blockedWords) {
+                if (input.includes(word)) {
+                    alert('Tu mensaje contiene palabras prohibidas.');
+                    return;
+                }
+            }
+
+            if (input) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('forum-message');
+                messageDiv.textContent = input;
+
+                document.getElementById('forum-messages').appendChild(messageDiv);
+                localStorage.setItem('forumMessages', document.getElementById('forum-messages').innerHTML); // Guardar los mensajes
+                document.getElementById('forum-input').value = '';  // Limpiar el campo de texto
+            }
+        }
+
+        // Cargar mensajes guardados
+        function loadForumMessages() {
+            const savedMessages = localStorage.getItem('forumMessages');
+            if (savedMessages) {
+                document.getElementById('forum-messages').innerHTML = savedMessages;
+            }
+        }
+
+        document.getElementById('submit-message').addEventListener('click', handleForumMessage);
+        window.onload = () => {
+            calculateNextHoliday();
+            loadForumMessages();
+        };
     </script>
 </body>
 </html>
