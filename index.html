@@ -3,69 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendario de Feriados y Foro</title>
+    <title>Feriadomania🧉| Calendario de Feriados y Foro</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; background-color: #e0f7fa; color: #333; }
-        h1 { color: #00796b; text-align: center; }
-        .holiday, .forum-post { background-color: #ffffff; border-radius: 8px; padding: 20px; margin: 10px auto; width: 80%; max-width: 600px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-        .holiday:hover, .forum-post:hover { background-color: #b2dfdb; }
-        .holiday { animation: fadeIn 1s; }
-        .forum-post { animation: slideIn 1s; }
-        .btn { background-color: #00796b; color: #ffffff; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer; transition: background-color 0.3s; }
+        h1 { color: #00796b; text-align: center; font-size: 1.5em; }
+        .container { display: flex; justify-content: space-between; }
+        .section { background-color: #ffffff; border-radius: 8px; padding: 15px; margin: 10px; width: 48%; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .section:hover { background-color: #b2dfdb; }
+        .btn { background-color: #00796b; color: #ffffff; border: none; border-radius: 5px; padding: 8px 16px; font-size: 14px; cursor: pointer; transition: background-color 0.3s; }
         .btn:hover { background-color: #004d40; }
         .btn:disabled { background-color: #b2dfdb; cursor: not-allowed; }
-        .login, .register { margin-bottom: 20px; }
-        .forum { margin-top: 20px; }
-        .countdown { 
-            background-color: #ffffff; 
-            border-radius: 8px; 
-            padding: 20px; 
-            margin: 10px auto; 
-            width: 80%; 
-            max-width: 600px; 
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
-            text-align: center; 
-            position: relative;
-            font-size: 1.2em;
-        }
-        .countdown h2 { 
-            color: #004d40; 
-            margin-bottom: 20px; 
-        }
-        .countdown .timer { 
-            font-size: 2em; 
-            color: #00796b; 
-            font-weight: bold; 
-            margin-bottom: 10px; 
-        }
-        .countdown .details { 
-            font-size: 1em; 
-            color: #004d40; 
-        }
-        .details strong { 
-            display: block; 
-            margin-top: 10px; 
-            font-size: 1.2em; 
-        }
-        select { padding: 10px; border-radius: 5px; border: 1px solid #00796b; background-color: #ffffff; }
+        .login, .register { margin-bottom: 15px; }
+        .forum { margin-top: 15px; }
+        .countdown { text-align: center; position: relative; font-size: 0.9em; }
+        .countdown h2 { color: #004d40; font-size: 1.2em; margin-bottom: 15px; }
+        .countdown .timer { font-size: 1.5em; color: #00796b; font-weight: bold; margin-bottom: 5px; }
+        .countdown .details { font-size: 0.9em; color: #004d40; }
+        .holiday-list { max-height: 300px; overflow-y: auto; }
+        .holiday-list ul { list-style: none; padding: 0; }
+        .holiday-list li { margin: 5px 0; padding: 10px; border: 1px solid #00796b; border-radius: 5px; background-color: #ffffff; cursor: pointer; transition: background-color 0.3s; font-size: 0.9em; }
+        .holiday-list li:hover { background-color: #b2dfdb; }
+        .holiday-details { font-size: 0.9em; color: #004d40; }
+        .no-holidays { background-color: #ffebee; color: #b71c1c; padding: 10px; border: 1px solid #b71c1c; border-radius: 5px; text-align: center; font-size: 0.9em; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
 </head>
 <body>
-    <h1>Calendario de Feriados y Foro</h1>
-
-    <div class="countdown">
-        <h2>Cuenta Regresiva para el Próximo Feriado</h2>
-        <div class="timer" id="countdown-timer"></div>
-        <div class="details" id="holiday-details"></div>
+    <h1>Feriadomania🧉| Calendario de Feriados y Foro</h1>
+    
+    <div id="no-holidays-warning" class="no-holidays" style="display:none;">
+        Septiembre es un mes sin feriados.
     </div>
 
-    <div>
-        <label for="holiday-select">Selecciona un feriado:</label>
-        <select id="holiday-select" onchange="displayHolidayDetails()">
-            <option value="">--Seleccione un feriado--</option>
-        </select>
+    <div class="container">
+        <div class="section countdown">
+            <h2>Cuenta Regresiva para el Próximo Feriado</h2>
+            <div class="timer" id="countdown-timer"></div>
+            <div class="details" id="holiday-details"></div>
+        </div>
+
+        <div class="section holiday-list">
+            <h2>Lista de Feriados</h2>
+            <ul id="holiday-list">
+                <!-- Los feriados se llenarán aquí -->
+            </ul>
+        </div>
+
+        <div class="section holiday-details" id="selected-holiday-details">
+            <h2>Detalles del Feriado Seleccionado</h2>
+            <div id="holiday-info">
+                <!-- Detalles del feriado seleccionado se mostrarán aquí -->
+            </div>
+        </div>
     </div>
 
     <div class="forum">
@@ -89,7 +79,9 @@
             <button class="btn" onclick="hideRegisterForm()">Cancelar</button>
         </div>
 
-        <div id="forum-posts"></div>
+        <div id="forum-posts" style="display:none;">
+            <!-- Los mensajes del foro se llenarán aquí -->
+        </div>
 
         <div id="post-form" style="display:none;">
             <h3>Nuevo Mensaje</h3>
@@ -99,58 +91,80 @@
     </div>
 
     <script>
-        // Lista de feriados
-        const holidays = [
-            { date: '2024-01-01', name: 'Año Nuevo', description: 'Celebración del inicio del nuevo año según el calendario gregoriano.', reason: 'Marca el comienzo del nuevo año, un momento para reflexionar y hacer resoluciones.' },
-            { date: '2024-02-12', name: 'Carnaval', description: 'Fiestas y desfiles previos al inicio de la Cuaresma, con celebraciones populares y bailes.', reason: 'Un tiempo para disfrutar antes del periodo de Cuaresma, con eventos festivos y coloridos.' },
-            { date: '2024-02-13', name: 'Carnaval', description: 'Segundo día de festividades del Carnaval.', reason: 'Continúa la celebración del Carnaval con desfiles y eventos comunitarios.' },
-            { date: '2024-03-24', name: 'Día Nacional de la Memoria por la Verdad y la Justicia', description: 'Conmemoración de las víctimas de la dictadura militar que gobernó Argentina entre 1976 y 1983.', reason: 'Recordar y honrar a las víctimas de la dictadura para promover la verdad y la justicia.' },
-            { date: '2024-04-07', name: 'Día del Veterano y de los Caídos en la Guerra de Malvinas', description: 'Recordación de los soldados argentinos que participaron en la guerra de Malvinas en 1982.', reason: 'Rendir homenaje a los veteranos y recordar la guerra de Malvinas y sus consecuencias.' },
-            { date: '2024-05-01', name: 'Día del Trabajador', description: 'Celebración internacional de los derechos de los trabajadores y la clase trabajadora.', reason: 'Reconocer y celebrar las contribuciones de los trabajadores y la lucha por sus derechos.' },
-            { date: '2024-05-25', name: 'Día de la Revolución de Mayo', description: 'Conmemoración de la revolución que llevó a la independencia de Argentina del dominio español.', reason: 'Celebrar el inicio del proceso de independencia de Argentina.' },
-            { date: '2024-06-17', name: 'Paso a la Inmortalidad del General Don Martín Miguel de Güemes', description: 'Homenaje al líder militar que defendió el norte de Argentina durante la guerra de independencia.', reason: 'Recordar el liderazgo y las contribuciones de Güemes a la independencia de Argentina.' },
-            { date: '2024-06-20', name: 'Paso a la Inmortalidad del General Manuel Belgrano', description: 'Recordación del creador de la bandera argentina y uno de los líderes de la independencia.', reason: 'Honrar a Manuel Belgrano por su papel en la creación de la bandera y su liderazgo.' },
-            { date: '2024-07-09', name: 'Día de la Independencia', description: 'Celebración de la declaración de independencia de Argentina de España en 1816.', reason: 'Conmemorar la independencia de Argentina y su historia.' },
-            { date: '2024-08-19', name: 'Día del Paso a la Inmortalidad del General José de San Martín', description: 'Conmemoración del líder de la independencia sudamericana.', reason: 'Recordar las contribuciones de San Martín a la independencia de Sudamérica.' },
-            { date: '2024-10-12', name: 'Día del Respeto a la Diversidad Cultural', description: 'Celebración de la diversidad cultural y reconocimiento de las culturas originarias.', reason: 'Promover el respeto y la valoración de las diversas culturas en Argentina.' },
-            { date: '2024-11-01', name: 'Día de Todos los Santos', description: 'Celebración cristiana en honor a todos los santos.', reason: 'Recordar y honrar a todos los santos en la tradición cristiana.' },
-            { date: '2024-11-25', name: 'Día de la Soberanía Nacional', description: 'Conmemoración de la batalla de Vuelta de Obligado, que destacó la resistencia argentina contra la invasión anglo-francesa.', reason: 'Honrar la valentía y la resistencia en la batalla de Vuelta de Obligado.' },
-            { date: '2024-12-08', name: 'Inmaculada Concepción de la Virgen María', description: 'Celebración religiosa en honor a la Virgen María y su concepción sin pecado original.', reason: 'Celebrar el dogma de la Inmaculada Concepción de la Virgen María.' },
-            { date: '2024-12-24', name: 'Nochebuena', description: 'Celebración de la víspera de Navidad.', reason: 'Prepararse para la Navidad con celebraciones y reuniones familiares.' },
-            { date: '2024-12-25', name: 'Navidad', description: 'Celebración del nacimiento de Jesucristo.', reason: 'Conmemorar el nacimiento de Jesús y la festividad cristiana de la Navidad.' }
+        function getCurrentYear() {
+            return new Date().getFullYear();
+        }
+
+        const baseHolidays = [
+            { month: 0, day: 1, name: 'Año Nuevo', description: 'Celebración del inicio del nuevo año según el calendario gregoriano.', reason: 'Marca el comienzo del nuevo año, un momento para reflexionar y hacer resoluciones.' },
+            { month: 1, day: 12, name: 'Carnaval', description: 'Fiestas y desfiles previos al inicio de la Cuaresma, con celebraciones populares y bailes.', reason: 'Un tiempo para disfrutar antes del periodo de Cuaresma, con eventos festivos y coloridos.' },
+            { month: 1, day: 13, name: 'Carnaval', description: 'Segundo día de festividades del Carnaval.', reason: 'Continúa la celebración del Carnaval con desfiles y eventos comunitarios.' },
+            { month: 2, day: 24, name: 'Día Nacional de la Memoria por la Verdad y la Justicia', description: 'Conmemoración de las víctimas de la dictadura militar que gobernó Argentina entre 1976 y 1983.', reason: 'Recordar y honrar a las víctimas de la dictadura para promover la verdad y la justicia.' },
+            { month: 3, day: 7, name: 'Día del Veterano y de los Caídos en la Guerra de Malvinas', description: 'Recordación de los soldados argentinos que participaron en la guerra de Malvinas en 1982.', reason: 'Rendir homenaje a los veteranos y recordar la guerra de Malvinas y sus consecuencias.' },
+            { month: 4, day: 1, name: 'Día del Trabajador', description: 'Celebración internacional de los derechos de los trabajadores y la clase trabajadora.', reason: 'Reconocer y celebrar las contribuciones de los trabajadores y la lucha por sus derechos.' },
+            { month: 4, day: 25, name: 'Día de la Revolución de Mayo', description: 'Conmemoración de la revolución que llevó a la independencia de Argentina del dominio español.', reason: 'Celebrar el inicio del proceso de independencia de Argentina.' },
+            { month: 5, day: 17, name: 'Paso a la Inmortalidad del General Don Martín Miguel de Güemes', description: 'Homenaje al líder militar que defendió el norte de Argentina durante la guerra de independencia.', reason: 'Recordar el liderazgo y las contribuciones de Güemes a la independencia de Argentina.' },
+            { month: 5, day: 20, name: 'Paso a la Inmortalidad del General Manuel Belgrano', description: 'Recordación del creador de la bandera argentina y uno de los líderes clave en la independencia.', reason: 'Rendir homenaje a Belgrano y su papel crucial en la independencia y creación de la bandera nacional.' },
+            { month: 6, day: 9, name: 'Día de la Independencia', description: 'Celebración de la declaración de independencia de Argentina de España en 1816.', reason: 'Conmemorar la independencia de Argentina y su liberación del dominio colonial.' },
+            { month: 7, day: 19, name: 'Día del Paso a la Inmortalidad del General José de San Martín', description: 'Conmemoración del líder de la independencia sudamericana.', reason: 'Recordar las contribuciones de San Martín a la independencia de Sudamérica.' },
+            { month: 9, day: 12, name: 'Día del Respeto a la Diversidad Cultural', description: 'Celebración de la diversidad cultural y reconocimiento de las culturas originarias.', reason: 'Promover la inclusión y el respeto por las culturas y tradiciones diversas.' },
+            { month: 10, day: 1, name: 'Día de Todos los Santos', description: 'Celebración cristiana en honor a todos los santos y mártires de la Iglesia.', reason: 'Recordar y honrar a todos los santos y mártires en la tradición cristiana.' },
+            { month: 10, day: 25, name: 'Día de la Soberanía Nacional', description: 'Conmemoración de la batalla de Vuelta de Obligado, que destacó la resistencia argentina contra la invasión anglo-francesa.', reason: 'Honrar la valentía y la resistencia en la batalla de Vuelta de Obligado.' },
+            { month: 11, day: 8, name: 'Inmaculada Concepción de la Virgen María', description: 'Celebración religiosa en honor a la Virgen María y su concepción sin pecado original.', reason: 'Celebrar el dogma de la Inmaculada Concepción de la Virgen María.' },
+            { month: 11, day: 24, name: 'Nochebuena', description: 'Celebración de la víspera de Navidad.', reason: 'Prepararse para la Navidad con celebraciones y reuniones familiares.' },
+            { month: 11, day: 25, name: 'Navidad', description: 'Celebración del nacimiento de Jesucristo.', reason: 'Conmemorar el nacimiento de Jesús y la festividad cristiana de la Navidad.' }
         ];
 
-        // Variables para el foro
-        const users = [];
-        const prohibitedWords = ['insulto1', 'insulto2']; // Reemplaza con palabras reales
-        let loggedIn = false;
-
-        function displayHolidays() {
-            const selectElement = document.getElementById('holiday-select');
-            holidays.forEach(holiday => {
-                const option = document.createElement('option');
-                option.value = holiday.date;
-                option.textContent = `${holiday.name} (${holiday.date})`;
-                selectElement.appendChild(option);
+        function getHolidaysForYear(year) {
+            return baseHolidays.map(holiday => {
+                return { ...holiday, date: `${year}-${String(holiday.month + 1).padStart(2, '0')}-${String(holiday.day).padStart(2, '0')}` };
             });
         }
 
-        function displayHolidayDetails() {
-            const selectedDate = document.getElementById('holiday-select').value;
-            const holiday = holidays.find(h => h.date === selectedDate);
+        function getStoredUsers() {
+            return JSON.parse(localStorage.getItem('users')) || [];
+        }
 
-            if (holiday) {
-                const detailsDiv = document.getElementById('holiday-details');
-                detailsDiv.innerHTML = `
-                    <strong>${holiday.name}</strong><br>
-                    Fecha: ${holiday.date}<br>
-                    Descripción: ${holiday.description}<br>
-                    Razón: ${holiday.reason}
-                `;
-            }
+        function setStoredUsers(users) {
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+
+        function getStoredPosts() {
+            return JSON.parse(localStorage.getItem('posts')) || [];
+        }
+
+        function setStoredPosts(posts) {
+            localStorage.setItem('posts', JSON.stringify(posts));
+        }
+
+        function displayHolidays() {
+            const year = getCurrentYear();
+            const holidays = getHolidaysForYear(year);
+            const holidayList = document.getElementById('holiday-list');
+            holidayList.innerHTML = '';
+            holidays.forEach(holiday => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${holiday.name} (${holiday.date})`;
+                listItem.onclick = () => {
+                    displayHolidayDetails(holiday);
+                };
+                holidayList.appendChild(listItem);
+            });
+        }
+
+        function displayHolidayDetails(holiday) {
+            const detailsDiv = document.getElementById('holiday-info');
+            detailsDiv.innerHTML = `
+                <strong>${holiday.name}</strong><br>
+                Fecha: ${holiday.date}<br>
+                Descripción: ${holiday.description}<br>
+                Razón: ${holiday.reason}
+            `;
         }
 
         function countdownToNextHoliday() {
+            const year = getCurrentYear();
+            const holidays = getHolidaysForYear(year);
             const now = new Date();
             const upcomingHoliday = holidays
                 .map(h => new Date(h.date))
@@ -187,7 +201,8 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            loggedIn = users.some(user => user.username === username && user.password === password);
+            const users = getStoredUsers();
+            const loggedIn = users.some(user => user.username === username && user.password === password);
 
             if (loggedIn) {
                 alert('Inicio de sesión exitoso.');
@@ -215,12 +230,15 @@
             const newUsername = document.getElementById('new-username').value;
             const newPassword = document.getElementById('new-password').value;
 
+            const users = getStoredUsers();
+
             if (users.some(user => user.username === newUsername)) {
                 alert('El nombre de usuario ya existe.');
                 return;
             }
 
             users.push({ username: newUsername, password: newPassword });
+            setStoredUsers(users);
             alert('Registro exitoso.');
             hideRegisterForm();
         }
@@ -228,26 +246,46 @@
         function postMessage() {
             const content = document.getElementById('post-content').value;
 
+            const prohibitedWords = ['insulto1', 'insulto2']; // Reemplaza con palabras reales
             if (prohibitedWords.some(word => content.includes(word))) {
                 alert('El mensaje contiene palabras prohibidas.');
                 return;
             }
 
-            const postDiv = document.createElement('div');
-            postDiv.className = 'forum-post';
-            postDiv.innerHTML = `<p>${content}</p>`;
-            document.getElementById('forum-posts').appendChild(postDiv);
+            const posts = getStoredPosts();
+            posts.push({ username: getStoredUsers().find(user => user.username === document.getElementById('username').value).username, content });
+            setStoredPosts(posts);
+
+            displayPosts();
             document.getElementById('post-content').value = '';
         }
 
         function displayPosts() {
-            // Esta función debería cargar los mensajes del foro si hay almacenados
-            // Por ahora se deja vacío, puedes implementarlo si necesitas
+            const posts = getStoredPosts();
+            const forumPosts = document.getElementById('forum-posts');
+            forumPosts.innerHTML = '';
+
+            posts.forEach(post => {
+                const postDiv = document.createElement('div');
+                postDiv.className = 'forum-post';
+                postDiv.innerHTML = `<p><strong>${post.username}:</strong> ${post.content}</p>`;
+                forumPosts.appendChild(postDiv);
+            });
+        }
+
+        function checkSeptember() {
+            const now = new Date();
+            if (now.getMonth() === 8) { // Septiembre es el mes 8 (0-indexado)
+                document.getElementById('no-holidays-warning').style.display = 'block';
+            } else {
+                document.getElementById('no-holidays-warning').style.display = 'none';
+            }
         }
 
         // Inicializar la página
         displayHolidays();
         countdownToNextHoliday();
+        checkSeptember();
     </script>
 </body>
 </html>
