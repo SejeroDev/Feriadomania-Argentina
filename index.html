@@ -29,6 +29,7 @@
             display: flex;
             justify-content: space-around;
             padding: 20px;
+            flex-wrap: wrap;
         }
 
         section {
@@ -37,6 +38,7 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
 
         #countdown-info p {
@@ -47,6 +49,8 @@
             width: 100%;
             padding: 10px;
             margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
         }
 
         #submit-message {
@@ -71,6 +75,7 @@
             padding: 10px;
             border-radius: 5px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            white-space: pre-wrap;
         }
 
         /* Animaciones */
@@ -95,7 +100,7 @@
 <body>
     <header>
         <h1>Feriadomanía</h1>
-        <p>Versión 1.0 - Puede contener errores</p>
+        <p>Versión 2.0 - Mejorada</p>
     </header>
 
     <main class="container">
@@ -137,7 +142,7 @@
             // Agrega el resto de feriados aquí...
         ];
 
-        const blockedWords = ['insulto1', 'insulto2'];  // Agrega aquí más palabras prohibidas
+        const blockedWords = ['insulto1', 'insulto2', 'groseria'];  // Agrega más palabras prohibidas
 
         // Calcular el próximo feriado
         function calculateNextHoliday() {
