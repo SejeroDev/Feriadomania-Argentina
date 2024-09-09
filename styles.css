@@ -1,67 +1,57 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f0f0f0;
+    background-color: #e0f7fa;
     margin: 0;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-header {
-    background-color: #00796B;
-    color: white;
-    padding: 15px;
+.container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+    width: 90%;
+    max-width: 500px;
 }
 
-main {
-    padding: 20px;
+h1 {
+    font-size: 1.8em;
+    color: #00796b;
+    margin-bottom: 20px;
 }
 
-#login-section, #register-section {
-    width: 300px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+#countdown {
+    margin-bottom: 20px;
 }
 
-#login-section input, #register-section input {
-    width: calc(100% - 22px);
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+p {
+    font-size: 1.2em;
+    color: #004d40;
+    margin: 10px 0;
 }
 
 button {
-    width: 100%;
-    padding: 10px;
-    background-color: #00796B;
-    color: white;
+    padding: 12px 24px;
+    font-size: 1.1em;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
+    background-color: #00796b;
+    color: #ffffff;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #004D40;
+    background-color: #004d40;
 }
 
-#holidayList {
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.comment {
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-}
-
-.comment-author {
-    font-weight: bold;
+#holiday-description {
+    font-size: 1em;
+    color: #00796b;
+    font-style: italic;
 }
