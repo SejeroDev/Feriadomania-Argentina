@@ -70,46 +70,37 @@
     <script>
         // Lista de feriados
         const holidays = [
-            { date: '2024-01-01', name: 'Año Nuevo', description: 'Celebración del inicio del nuevo año según el calendario gregoriano.' },
-            { date: '2024-02-12', name: 'Carnaval', description: 'Fiestas y desfiles previos al inicio de la Cuaresma, con celebraciones populares y bailes.' },
-            { date: '2024-02-13', name: 'Carnaval', description: 'Segundo día de festividades del Carnaval.' },
-            { date: '2024-03-24', name: 'Día Nacional de la Memoria por la Verdad y la Justicia', description: 'Conmemoración de las víctimas de la dictadura militar que gobernó Argentina entre 1976 y 1983.' },
-            { date: '2024-04-07', name: 'Día del Veterano y de los Caídos en la Guerra de Malvinas', description: 'Recordación de los soldados argentinos que participaron en la guerra de Malvinas en 1982.' },
-            { date: '2024-05-01', name: 'Día del Trabajador', description: 'Celebración internacional de los derechos de los trabajadores y la clase trabajadora.' },
-            { date: '2024-05-25', name: 'Día de la Revolución de Mayo', description: 'Conmemoración de la revolución que llevó a la independencia de Argentina del dominio español.' },
-            { date: '2024-06-17', name: 'Paso a la Inmortalidad del General Don Martín Miguel de Güemes', description: 'Homenaje al líder militar que defendió el norte de Argentina durante la guerra de independencia.' },
-            { date: '2024-06-20', name: 'Paso a la Inmortalidad del General Manuel Belgrano', description: 'Recordación del creador de la bandera argentina y uno de los líderes de la independencia.' },
-            { date: '2024-07-09', name: 'Día de la Independencia', description: 'Celebración de la declaración de independencia de Argentina de España en 1816.' },
-            { date: '2024-08-19', name: 'Día del Paso a la Inmortalidad del General José de San Martín', description: 'Conmemoración del líder de la independencia sudamericana.' },
-            { date: '2024-10-12', name: 'Día del Respeto a la Diversidad Cultural', description: 'Celebración de la diversidad cultural y reconocimiento de las culturas originarias.' },
-            { date: '2024-11-01', name: 'Día de Todos los Santos', description: 'Celebración cristiana en honor a todos los santos.' },
-            { date: '2024-11-25', name: 'Día de la Soberanía Nacional', description: 'Conmemoración de la batalla de Vuelta de Obligado, que destacó la resistencia argentina contra la invasión anglo-francesa.' },
-            { date: '2024-12-08', name: 'Inmaculada Concepción de la Virgen María', description: 'Celebración religiosa en honor a la Virgen María y su concepción sin pecado original.' },
-            { date: '2024-12-24', name: 'Nochebuena', description: 'Celebración de la víspera de Navidad.' },
-            { date: '2024-12-25', name: 'Navidad', description: 'Celebración del nacimiento de Jesucristo.' },
-            { date: '2024-03-02', name: 'Día de la Bandera', description: 'Conmemoración de la bandera nacional.' },
-            { date: '2024-03-03', name: 'Día del Veterano y de los Caídos en la Guerra de Malvinas', description: 'Recordación de los veteranos y caídos en la Guerra de Malvinas.' },
-            { date: '2024-04-21', name: 'Día del Aborigen Argentino', description: 'Reconocimiento de los pueblos originarios de Argentina.' }
+            { date: '2024-01-01', name: 'Año Nuevo', description: 'Celebración del inicio del nuevo año según el calendario gregoriano.', reason: 'Marca el comienzo del nuevo año, un momento para reflexionar y hacer resoluciones.' },
+            { date: '2024-02-12', name: 'Carnaval', description: 'Fiestas y desfiles previos al inicio de la Cuaresma, con celebraciones populares y bailes.', reason: 'Un tiempo para disfrutar antes del periodo de Cuaresma, con eventos festivos y coloridos.' },
+            { date: '2024-02-13', name: 'Carnaval', description: 'Segundo día de festividades del Carnaval.', reason: 'Continúa la celebración del Carnaval con desfiles y eventos comunitarios.' },
+            { date: '2024-03-24', name: 'Día Nacional de la Memoria por la Verdad y la Justicia', description: 'Conmemoración de las víctimas de la dictadura militar que gobernó Argentina entre 1976 y 1983.', reason: 'Recordar y honrar a las víctimas de la dictadura para promover la verdad y la justicia.' },
+            { date: '2024-04-07', name: 'Día del Veterano y de los Caídos en la Guerra de Malvinas', description: 'Recordación de los soldados argentinos que participaron en la guerra de Malvinas en 1982.', reason: 'Rendir homenaje a los veteranos y recordar la guerra de Malvinas y sus consecuencias.' },
+            { date: '2024-05-01', name: 'Día del Trabajador', description: 'Celebración internacional de los derechos de los trabajadores y la clase trabajadora.', reason: 'Reconocer y celebrar las contribuciones de los trabajadores y la lucha por sus derechos.' },
+            { date: '2024-05-25', name: 'Día de la Revolución de Mayo', description: 'Conmemoración de la revolución que llevó a la independencia de Argentina del dominio español.', reason: 'Celebrar el inicio del proceso de independencia de Argentina.' },
+            { date: '2024-06-17', name: 'Paso a la Inmortalidad del General Don Martín Miguel de Güemes', description: 'Homenaje al líder militar que defendió el norte de Argentina durante la guerra de independencia.', reason: 'Recordar el liderazgo y las contribuciones de Güemes a la independencia de Argentina.' },
+            { date: '2024-06-20', name: 'Paso a la Inmortalidad del General Manuel Belgrano', description: 'Recordación del creador de la bandera argentina y uno de los líderes de la independencia.', reason: 'Honrar a Manuel Belgrano por su papel en la creación de la bandera y su liderazgo.' },
+            { date: '2024-07-09', name: 'Día de la Independencia', description: 'Celebración de la declaración de independencia de Argentina de España en 1816.', reason: 'Conmemorar la independencia de Argentina y su historia.' },
+            { date: '2024-08-19', name: 'Día del Paso a la Inmortalidad del General José de San Martín', description: 'Conmemoración del líder de la independencia sudamericana.', reason: 'Recordar las contribuciones de San Martín a la independencia de Sudamérica.' },
+            { date: '2024-10-12', name: 'Día del Respeto a la Diversidad Cultural', description: 'Celebración de la diversidad cultural y reconocimiento de las culturas originarias.', reason: 'Promover el respeto y la valoración de las diversas culturas en Argentina.' },
+            { date: '2024-11-01', name: 'Día de Todos los Santos', description: 'Celebración cristiana en honor a todos los santos.', reason: 'Recordar y honrar a todos los santos en la tradición cristiana.' },
+            { date: '2024-11-25', name: 'Día de la Soberanía Nacional', description: 'Conmemoración de la batalla de Vuelta de Obligado, que destacó la resistencia argentina contra la invasión anglo-francesa.', reason: 'Celebrar la resistencia de Argentina frente a la invasión extranjera.' },
+            { date: '2024-12-08', name: 'Inmaculada Concepción de la Virgen María', description: 'Celebración religiosa en honor a la Virgen María y su concepción sin pecado original.', reason: 'Conmemorar la creencia en la concepción sin pecado original de la Virgen María.' },
+            { date: '2024-12-24', name: 'Nochebuena', description: 'Celebración de la víspera de Navidad.', reason: 'Celebrar la víspera de Navidad y preparar para el día siguiente.' },
+            { date: '2024-12-25', name: 'Navidad', description: 'Celebración del nacimiento de Jesucristo.', reason: 'Conmemorar el nacimiento de Jesús y la festividad cristiana de la Navidad.' }
         ];
 
-        const users = [
-            { username: 'usuario1', password: 'contraseña1' },
-            { username: 'usuario2', password: 'contraseña2' }
-        ];
-
-        const prohibitedWords = ['insulto1', 'insulto2']; // Lista de palabras prohibidas
-
+        // Variables para el foro
+        const users = [];
+        const prohibitedWords = ['insulto1', 'insulto2']; // Reemplaza con palabras reales
         let loggedIn = false;
 
         function displayHolidays() {
-            const holidaySelect = document.getElementById('holiday-select');
-            holidaySelect.innerHTML = '<option value="">--Seleccione un feriado--</option>'; // Limpiar opciones actuales
-
+            const selectElement = document.getElementById('holiday-select');
             holidays.forEach(holiday => {
                 const option = document.createElement('option');
                 option.value = holiday.date;
-                option.textContent = `${holiday.name} - ${holiday.date}`;
-                holidaySelect.appendChild(option);
+                option.textContent = `${holiday.name} (${holiday.date})`;
+                selectElement.appendChild(option);
             });
         }
 
@@ -123,7 +114,8 @@
                 holidayDiv.innerHTML = `
                     <strong>${holiday.name}</strong><br>
                     Fecha: ${holiday.date}<br>
-                    Descripción: ${holiday.description}
+                    Descripción: ${holiday.description}<br>
+                    Razón: ${holiday.reason}
                 `;
                 document.body.appendChild(holidayDiv);
             }
@@ -149,6 +141,7 @@
                         ${days} días, ${hours} horas, ${minutes} minutos, ${seconds} segundos
                         <br><strong>${upcomingHoliday.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</strong>
                         <br>${holidays.find(h => h.date === upcomingHoliday.toISOString().split('T')[0]).description}
+                        <br><em>${holidays.find(h => h.date === upcomingHoliday.toISOString().split('T')[0]).reason}</em>
                     `;
                 }, 1000);
             } else {
