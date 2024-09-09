@@ -289,6 +289,10 @@
     </script>
 </body>
 </html>
+<script src="https://www.gstatic.com/firebasejs/9.21.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.21.1/firebase-auth.js"></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
 <script>
     // Configuración de Firebase
     const firebaseConfig = {
@@ -316,19 +320,23 @@
         });
     }
 
-    gapi.load('auth2', function() {
-        gapi.auth2.init().then(function() {
-            gapi.signin2.render('g-signin2', {
-                'scope': 'profile email',
-                'width': 240,
-                'height': 50,
-                'longtitle': true,
-                'theme': 'dark',
-                'onsuccess': onSignIn,
-                'onerror': function(err) { console.error(err); }
+    function renderGoogleSignInButton() {
+        gapi.load('auth2', function() {
+            gapi.auth2.init().then(function() {
+                gapi.signin2.render('g-signin2', {
+                    'scope': 'profile email',
+                    'width': 240,
+                    'height': 50,
+                    'longtitle': true,
+                    'theme': 'dark',
+                    'onsuccess': onSignIn,
+                    'onerror': function(err) { console.error(err); }
+                });
             });
         });
-    });
+    }
+
+    renderGoogleSignInButton(); // Llama a la función para renderizar el botón
 
     // Lista de feriados
     const holidays = [
