@@ -5,24 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendario de Feriados y Foro</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
-        h1 { color: #333; text-align: center; }
-        .holiday, .forum-post { background-color: #fff; border-radius: 5px; padding: 15px; margin: 10px auto; width: 80%; max-width: 600px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .holiday:hover, .forum-post:hover { background-color: #e0e0e0; }
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #e0f7fa; color: #333; }
+        h1 { color: #00796b; text-align: center; }
+        .holiday, .forum-post { background-color: #ffffff; border-radius: 8px; padding: 20px; margin: 10px auto; width: 80%; max-width: 600px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .holiday:hover, .forum-post:hover { background-color: #b2dfdb; }
         .holiday { animation: fadeIn 1s; }
         .forum-post { animation: slideIn 1s; }
+        .btn { background-color: #00796b; color: #ffffff; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer; transition: background-color 0.3s; }
+        .btn:hover { background-color: #004d40; }
+        .btn:disabled { background-color: #b2dfdb; cursor: not-allowed; }
+        .login, .register { margin-bottom: 20px; }
+        .forum { margin-top: 20px; }
+        .countdown { background-color: #ffffff; border-radius: 8px; padding: 20px; margin: 10px auto; width: 80%; max-width: 600px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); text-align: center; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .forum { margin-top: 20px; }
-        .login { margin-bottom: 20px; }
-        .comment { margin-top: 10px; }
-        .censored { color: red; }
     </style>
 </head>
 <body>
     <h1>Calendario de Feriados y Foro</h1>
 
     <div id="holidays-list"></div>
+
+    <div class="countdown">
+        <h2>Cuenta Regresiva para el Próximo Feriado</h2>
+        <div id="countdown-timer"></div>
+    </div>
 
     <div class="forum">
         <h2>Foro de Discusión</h2>
@@ -31,7 +38,18 @@
             <input type="text" id="username">
             <label for="password">Contraseña:</label>
             <input type="password" id="password">
-            <button onclick="login()">Iniciar Sesión</button>
+            <button class="btn" onclick="login()">Iniciar Sesión</button>
+            <button class="btn" onclick="showRegisterForm()">Registrarse</button>
+        </div>
+
+        <div class="register" id="register-form" style="display:none;">
+            <h3>Registro de Usuario</h3>
+            <label for="new-username">Nombre de Usuario:</label>
+            <input type="text" id="new-username">
+            <label for="new-password">Contraseña:</label>
+            <input type="password" id="new-password">
+            <button class="btn" onclick="register()">Registrarse</button>
+            <button class="btn" onclick="hideRegisterForm()">Cancelar</button>
         </div>
 
         <div id="forum-posts"></div>
@@ -39,7 +57,7 @@
         <div id="post-form" style="display:none;">
             <h3>Nuevo Mensaje</h3>
             <textarea id="post-content" rows="4" cols="50"></textarea><br>
-            <button onclick="postMessage()">Enviar</button>
+            <button class="btn" onclick="postMessage()">Enviar</button>
         </div>
     </div>
 
@@ -63,7 +81,16 @@
             { date: '2024-12-08', name: 'Inmaculada Concepción de la Virgen María', description: 'Celebración religiosa en honor a la Virgen María y su concepción sin pecado original.' }
         ];
 
-        // Función para mostrar los feriados en la página
+        // Datos de usuarios para el inicio de sesión
+        const users = [
+            { username: 'usuario1', password: 'contraseña1' },
+            { username: 'usuario2', password: 'contraseña2' }
+        ];
+
+        const prohibitedWords = ['insulto1', 'insulto2']; // Lista de palabras prohibidas
+
+        let loggedIn = false;
+
         function displayHolidays() {
             const holidaysList = document.getElementById('holidays-list');
             holidaysList.innerHTML = ''; // Limpiar lista actual
@@ -80,80 +107,96 @@
             });
         }
 
-        // Datos de usuarios para el inicio de sesión
-        const users = [
-            { username: 'usuario1', password: 'contraseña1' },
-            { username: 'usuario2', password: 'contraseña2' }
-        ];
+        function countdownToNextHoliday() {
+            const today = new Date();
+            const upcomingHoliday = holidays
+                .map(h => ({ ...h, date: new Date(h.date) }))
+                .filter(h => h.date > today)
+                .sort((a, b) => a.date - b.date)[0];
 
-        let loggedIn = false;
+            if (!upcomingHoliday) {
+                document.getElementById('countdown-timer').innerText = 'No hay más feriados en el año.';
+                return;
+            }
+
+            const timeDifference = upcomingHoliday.date - today;
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            document.getElementById('countdown-timer').innerHTML = `
+                ${days} días, ${hours} horas, ${minutes} minutos, ${seconds} segundos
+                <br><strong>${upcomingHoliday.name}</strong><br>
+                ${upcomingHoliday.description}
+            `;
+        }
 
         function login() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            const user = users.find(user => user.username === username && user.password === password);
 
-            if (user) {
-                loggedIn = true;
+            loggedIn = users.some(user => user.username === username && user.password === password);
+
+            if (loggedIn) {
+                alert('Inicio de sesión exitoso.');
                 document.getElementById('post-form').style.display = 'block';
+                document.getElementById('forum-posts').style.display = 'block';
                 document.querySelector('.login').style.display = 'none';
-                displayForumPosts();
+                document.querySelector('.register').style.display = 'none';
+                displayPosts();
             } else {
-                alert('Usuario o contraseña incorrectos');
+                alert('Usuario o contraseña incorrectos.');
             }
         }
 
-        // Función para censurar mensajes
-        function censorMessage(message) {
-            const forbiddenWords = ['insulto1', 'insulto2']; // Palabras a censurar
-            let censoredMessage = message;
-            forbiddenWords.forEach(word => {
-                const regex = new RegExp(word, 'gi');
-                censoredMessage = censoredMessage.replace(regex, '<span class="censored">[censurado]</span>');
-            });
-            return censoredMessage;
+        function showRegisterForm() {
+            document.getElementById('register-form').style.display = 'block';
+            document.querySelector('.login').style.display = 'none';
         }
 
-        // Función para mostrar los mensajes del foro
-        const forumPosts = [];
-
-        function displayForumPosts() {
-            const forumPostsDiv = document.getElementById('forum-posts');
-            forumPostsDiv.innerHTML = ''; // Limpiar posts actuales
-
-            forumPosts.forEach(post => {
-                const postDiv = document.createElement('div');
-                postDiv.className = 'forum-post';
-                postDiv.innerHTML = `
-                    <strong>${post.username}</strong><br>
-                    ${censorMessage(post.content)}
-                `;
-                forumPostsDiv.appendChild(postDiv);
-            });
+        function hideRegisterForm() {
+            document.getElementById('register-form').style.display = 'none';
+            document.querySelector('.login').style.display = 'block';
         }
 
-        // Función para enviar un mensaje al foro
+        function register() {
+            const newUsername = document.getElementById('new-username').value;
+            const newPassword = document.getElementById('new-password').value;
+
+            if (users.some(user => user.username === newUsername)) {
+                alert('El nombre de usuario ya existe.');
+                return;
+            }
+
+            users.push({ username: newUsername, password: newPassword });
+            alert('Registro exitoso.');
+            hideRegisterForm();
+        }
+
         function postMessage() {
-            if (!loggedIn) {
-                alert('Debes iniciar sesión para publicar mensajes');
+            const content = document.getElementById('post-content').value;
+
+            if (prohibitedWords.some(word => content.includes(word))) {
+                alert('El mensaje contiene palabras prohibidas.');
                 return;
             }
 
-            const postContent = document.getElementById('post-content').value;
-            const username = document.getElementById('username').value;
-
-            if (postContent.trim() === '') {
-                alert('El mensaje no puede estar vacío');
-                return;
-            }
-
-            forumPosts.push({ username, content: postContent });
-            displayForumPosts();
-            document.getElementById('post-content').value = ''; // Limpiar textarea
+            const postDiv = document.createElement('div');
+            postDiv.className = 'forum-post';
+            postDiv.innerHTML = `<p>${content}</p>`;
+            document.getElementById('forum-posts').appendChild(postDiv);
+            document.getElementById('post-content').value = '';
         }
 
-        // Llamar a la función para mostrar los feriados cuando la página se carga
+        function displayPosts() {
+            // Esta función debería cargar los mensajes del foro si hay almacenados
+            // Por ahora se deja vacío, puedes implementarlo si necesitas
+        }
+
+        // Inicializar la página
         displayHolidays();
+        countdownToNextHoliday();
     </script>
 </body>
 </html>
