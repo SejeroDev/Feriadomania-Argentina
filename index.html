@@ -3,20 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cuenta Regresiva para el Próximo Feriado en Argentina</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Calendario de Feriados y Foro</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+        h1 { color: #333; text-align: center; }
+        .holiday, .forum-post { background-color: #fff; border-radius: 5px; padding: 15px; margin: 10px auto; width: 80%; max-width: 600px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .holiday:hover, .forum-post:hover { background-color: #e0e0e0; }
+        .holiday { animation: fadeIn 1s; }
+        .forum-post { animation: slideIn 1s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .forum { margin-top: 20px; }
+        .login { margin-bottom: 20px; }
+        .comment { margin-top: 10px; }
+        .censored { color: red; }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Cuenta Regresiva para el Próximo Feriado en Argentina</h1>
-        <div id="countdown">
-            <p id="days"></p>
-            <p id="weeks"></p>
-            <p id="holiday-name"></p>
-            <p id="holiday-description"></p>
+    <h1>Calendario de Feriados y Foro</h1>
+
+    <div id="holidays-list"></div>
+
+    <div class="forum">
+        <h2>Foro de Discusión</h2>
+        <div class="login">
+            <label for="username">Nombre de Usuario:</label>
+            <input type="text" id="username">
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password">
+            <button onclick="login()">Iniciar Sesión</button>
         </div>
-        <button onclick="calculateCountdown()">Calcular</button>
+
+        <div id="forum-posts"></div>
+
+        <div id="post-form" style="display:none;">
+            <h3>Nuevo Mensaje</h3>
+            <textarea id="post-content" rows="4" cols="50"></textarea><br>
+            <button onclick="postMessage()">Enviar</button>
+        </div>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        // Lista de feriados
+        const holidays = [
+            { date: '2024-01-01', name: 'Año Nuevo', description: 'Celebración del inicio del nuevo año según el calendario gregoriano.' },
+            { date: '2024-02-12', name: 'Carnaval', description: 'Fiestas y desfiles previos al inicio de la Cuaresma, con celebraciones populares y bailes.' },
+            { date: '2024-02-13', name: 'Carnaval', description: 'Segundo día de festividades del Carnaval.' },
+            { date: '2024-03-24', name: 'Día Nacional de la Memoria por la Verdad y la Justicia', description: 'Conmemoración de las víctimas de la dictadura militar que gobernó Argentina entre 1976 y 1983.' },
+            { date: '2024-04-07', name: 'Día del Veterano y de los Caídos en la Guerra de Malvinas', description: 'Recordación de los soldados argentinos que participaron en la guerra de Malvinas en 1982.' },
+            { date: '2024-05-01', name: 'Día del Trabajador', description: 'Celebración internacional de los derechos de los trabajadores y la clase trabajadora.' },
+            { date: '2024-05-25', name: 'Día de la Revolución de Mayo', description: 'Conmemoración de la revolución que llevó a la independencia de Argentina del dominio español.' },
+            { date: '2024-06-17', name: 'Paso a la Inmortalidad del General Don Martín Miguel de Güemes', description: 'Homenaje al líder militar que defendió el norte de Argentina durante la guerra de independencia.' },
+            { date: '2024-06-20', name: 'Paso a la Inmortalidad del General Manuel Belgrano', description: 'Recordación del creador de la bandera argentina y uno de los líderes de la independencia.' },
+            { date: '2024-07-09', name: 'Día de la Independencia', description: 'Celebración de la declaración de independencia de Argentina de España en 1816.' },
+            { date: '2024-08-19', name: 'Día del Paso a la Inmortalidad del General José de San Martín', description: 'Conmemoración del líder de la independencia sudamericana.' },
+            { date: '2024-10-12', name: 'Día del Respeto a la Diversidad Cultural', description: 'Celebración de la diversidad cultural y reconocimiento de las culturas originarias.' },
+            { date: '2024-11-01', name: 'Día de Todos los Santos', description: 'Celebración cristiana en honor a todos los santos.' },
+            { date: '2024-11-25', name: 'Día de la Soberanía Nacional', description: 'Conmemoración de la batalla de Vuelta de Obligado, que destacó la resistencia argentina contra la invasión anglo-francesa.' },
+            { date: '2024-12-08', name: 'Inmaculada Concepción de la Virgen María', description: 'Celebración religiosa en honor a la Virgen María y su concepción sin pecado original.' }
+        ];
+
+        // Función para mostrar los feriados en la página
+        function displayHolidays() {
+            const holidaysList = document.getElementById('holidays-list');
+            holidaysList.innerHTML = ''; // Limpiar lista actual
+
+            holidays.forEach(holiday => {
+                const holidayDiv = document.createElement('div');
+                holidayDiv.className = 'holiday';
+                holidayDiv.innerHTML = `
+                    <strong>${holiday.name}</strong><br>
+                    Fecha: ${holiday.date}<br>
+                    Descripción: ${holiday.description}
+                `;
+                holidaysList.appendChild(holidayDiv);
+            });
+        }
+
+        // Datos de usuarios para el inicio de sesión
+        const users = [
+            { username: 'usuario1', password: 'contraseña1' },
+            { username: 'usuario2', password: 'contraseña2' }
+        ];
+
+        let loggedIn = false;
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const user = users.find(user => user.username === username && user.password === password);
+
+            if (user) {
+                loggedIn = true;
+                document.getElementById('post-form').style.display = 'block';
+                document.querySelector('.login').style.display = 'none';
+                displayForumPosts();
+            } else {
+                alert('Usuario o contraseña incorrectos');
+            }
+        }
+
+        // Función para censurar mensajes
+        function censorMessage(message) {
+            const forbiddenWords = ['insulto1', 'insulto2']; // Palabras a censurar
+            let censoredMessage = message;
+            forbiddenWords.forEach(word => {
+                const regex = new RegExp(word, 'gi');
+                censoredMessage = censoredMessage.replace(regex, '<span class="censored">[censurado]</span>');
+            });
+            return censoredMessage;
+        }
+
+        // Función para mostrar los mensajes del foro
+        const forumPosts = [];
+
+        function displayForumPosts() {
+            const forumPostsDiv = document.getElementById('forum-posts');
+            forumPostsDiv.innerHTML = ''; // Limpiar posts actuales
+
+            forumPosts.forEach(post => {
+                const postDiv = document.createElement('div');
+                postDiv.className = 'forum-post';
+                postDiv.innerHTML = `
+                    <strong>${post.username}</strong><br>
+                    ${censorMessage(post.content)}
+                `;
+                forumPostsDiv.appendChild(postDiv);
+            });
+        }
+
+        // Función para enviar un mensaje al foro
+        function postMessage() {
+            if (!loggedIn) {
+                alert('Debes iniciar sesión para publicar mensajes');
+                return;
+            }
+
+            const postContent = document.getElementById('post-content').value;
+            const username = document.getElementById('username').value;
+
+            if (postContent.trim() === '') {
+                alert('El mensaje no puede estar vacío');
+                return;
+            }
+
+            forumPosts.push({ username, content: postContent });
+            displayForumPosts();
+            document.getElementById('post-content').value = ''; // Limpiar textarea
+        }
+
+        // Llamar a la función para mostrar los feriados cuando la página se carga
+        displayHolidays();
+    </script>
 </body>
 </html>
