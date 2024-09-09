@@ -8,15 +8,31 @@
 </head>
 <body>
     <div class="container">
-        <h1>Cuenta Regresiva para el Próximo Feriado en Argentina</h1>
+        <h1>Próximo Feriado en Argentina</h1>
         <div id="countdown">
-            <p id="days"></p>
-            <p id="weeks"></p>
-            <p id="holiday-name"></p>
-            <p id="holiday-description"></p>
+            <div class="countdown-item">
+                <h2>Días Restantes:</h2>
+                <p id="days" class="countdown-number"></p>
+            </div>
+            <div class="countdown-item">
+                <h2>Semanas Restantes:</h2>
+                <p id="weeks" class="countdown-number"></p>
+            </div>
+            <div class="countdown-item">
+                <h2>Feriado:</h2>
+                <p id="holiday-name"></p>
+            </div>
+            <div class="countdown-item">
+                <h2>Descripción:</h2>
+                <p id="holiday-description"></p>
+            </div>
         </div>
-        <button onclick="calculateCountdown()">Calcular</button>
+        <button onclick="calculateCountdown()">Actualizar Conteo</button>
     </div>
+    <footer>
+        <p>Información basada en los feriados nacionales de Argentina 2024.</p>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>

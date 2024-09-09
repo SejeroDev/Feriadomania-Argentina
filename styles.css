@@ -1,38 +1,50 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #e0f7fa;
+    background: linear-gradient(135deg, #e0f7fa, #b2dfdb);
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .container {
     background-color: #ffffff;
     padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     text-align: center;
-    width: 90%;
-    max-width: 500px;
+    width: 100%;
+    max-width: 600px;
 }
 
 h1 {
-    font-size: 1.8em;
+    font-size: 2em;
     color: #00796b;
     margin-bottom: 20px;
 }
 
-#countdown {
+.countdown-item {
     margin-bottom: 20px;
+}
+
+.countdown-item h2 {
+    font-size: 1.4em;
+    color: #004d40;
+}
+
+.countdown-number {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #00796b;
+    margin: 10px 0;
 }
 
 p {
     font-size: 1.2em;
     color: #004d40;
-    margin: 10px 0;
+    margin: 5px 0;
 }
 
 button {
@@ -50,8 +62,14 @@ button:hover {
     background-color: #004d40;
 }
 
+footer {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #004d40;
+}
+
 #holiday-description {
-    font-size: 1em;
-    color: #00796b;
     font-style: italic;
+    color: #00796b;
+    font-size: 1em;
 }
