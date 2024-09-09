@@ -1,6 +1,6 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif;
+    background-color: #e0f7fa;
     margin: 0;
     padding: 0;
     display: flex;
@@ -10,14 +10,18 @@ body {
 }
 
 .container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+    width: 90%;
+    max-width: 500px;
 }
 
 h1 {
+    font-size: 1.8em;
+    color: #00796b;
     margin-bottom: 20px;
 }
 
@@ -27,19 +31,27 @@ h1 {
 
 p {
     font-size: 1.2em;
+    color: #004d40;
     margin: 10px 0;
 }
 
 button {
-    padding: 10px 20px;
-    font-size: 1em;
+    padding: 12px 24px;
+    font-size: 1.1em;
     border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #fff;
+    border-radius: 6px;
+    background-color: #00796b;
+    color: #ffffff;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #004d40;
+}
+
+#holiday-description {
+    font-size: 1em;
+    color: #00796b;
+    font-style: italic;
 }
