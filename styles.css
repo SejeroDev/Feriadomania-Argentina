@@ -16,7 +16,7 @@ body {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 100%;
-    max-width: 600px;
+    max-width: 700px;
 }
 
 h1 {
@@ -62,13 +62,19 @@ button:hover {
     background-color: #004d40;
 }
 
+img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
 footer {
     margin-top: 20px;
     font-size: 0.9em;
     color: #004d40;
 }
 
-#holiday-description {
+#holiday-description, #holiday-history {
     font-style: italic;
     color: #00796b;
     font-size: 1em;
