@@ -86,7 +86,10 @@
             { date: '2024-11-25', name: 'Día de la Soberanía Nacional', description: 'Conmemoración de la batalla de Vuelta de Obligado, que destacó la resistencia argentina contra la invasión anglo-francesa.' },
             { date: '2024-12-08', name: 'Inmaculada Concepción de la Virgen María', description: 'Celebración religiosa en honor a la Virgen María y su concepción sin pecado original.' },
             { date: '2024-12-24', name: 'Nochebuena', description: 'Celebración de la víspera de Navidad.' },
-            { date: '2024-12-25', name: 'Navidad', description: 'Celebración del nacimiento de Jesucristo.' }
+            { date: '2024-12-25', name: 'Navidad', description: 'Celebración del nacimiento de Jesucristo.' },
+            { date: '2024-03-02', name: 'Día de la Bandera', description: 'Conmemoración de la bandera nacional.' },
+            { date: '2024-03-03', name: 'Día del Veterano y de los Caídos en la Guerra de Malvinas', description: 'Recordación de los veteranos y caídos en la Guerra de Malvinas.' },
+            { date: '2024-04-21', name: 'Día del Aborigen Argentino', description: 'Reconocimiento de los pueblos originarios de Argentina.' }
         ];
 
         const users = [
@@ -115,12 +118,14 @@
             const holiday = holidays.find(h => h.date === selectedDate);
 
             if (holiday) {
-                document.getElementById('countdown-timer').innerHTML = `
-                    <h2>${holiday.name}</h2>
-                    <p>${holiday.description}</p>
+                const holidayDiv = document.createElement('div');
+                holidayDiv.className = 'holiday';
+                holidayDiv.innerHTML = `
+                    <strong>${holiday.name}</strong><br>
+                    Fecha: ${holiday.date}<br>
+                    Descripción: ${holiday.description}
                 `;
-            } else {
-                document.getElementById('countdown-timer').innerHTML = 'Selecciona un feriado para ver los detalles.';
+                document.body.appendChild(holidayDiv);
             }
         }
 
